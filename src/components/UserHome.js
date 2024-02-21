@@ -40,6 +40,14 @@ const UserHome = () => {
     fetchUserData();
   }, [navigate]);
   
+  const handleLogout = () => {
+    // Remove the token from localStorage
+    localStorage.removeItem('token');
+    
+    // Redirect to the login page or home page
+    navigate('/login');
+  };
+  
 
   return (
     <div style={{ padding: '20px' }}>
@@ -50,6 +58,7 @@ const UserHome = () => {
         <li>Access your settings</li>
         <li>Explore available features</li>
       </ul>
+      <button onClick={handleLogout}>Logout</button>
       <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
       <button onClick={() => navigate('/settings')}>Settings</button>
       <button onClick={() => navigate('/2FA', { state: { username: userName , isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
