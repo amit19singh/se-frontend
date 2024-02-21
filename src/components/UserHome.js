@@ -3,35 +3,43 @@ import { useNavigate } from 'react-router-dom';
 
 const UserHome = () => {
   const [userName, setUserName] = useState('');
+  const [isTwoFactorEnabled, setisTwoFactorEnabled] = useState('');
   const navigate = useNavigate();
 
-  // Example function to fetch user data (adjust based on your actual data fetching logic)
   useEffect(() => {
     const fetchUserData = async () => {
-      // Assuming you store the user's token in localStorage and have an endpoint to fetch user details
       const token = localStorage.getItem('token');
       if (!token) {
         navigate('/'); // Redirect to login if no token found
         return;
       }
-
+  
       try {
-        // Replace with your actual fetch URL and include headers as necessary
-        const response = await fetch('/api/user/details', {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userDetail`, {
+          method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
         const data = await response.json();
-        setUserName(data.name); // Adjust based on the actual response structure
+        setUserName(data.username);
+        setisTwoFactorEnabled(data.twoFactorEnabled);
+        console.log(`2FA: ${data.twoFactorEnabled}`);
+        if (isTwoFactorEnabled) {
+          navigate('/verify2FA', { state: { username: userName } });
+        }
+
       } catch (error) {
         console.error('Error fetching user data:', error);
-        // Handle error (e.g., redirect to login or show a message)
       }
     };
-
+  
     fetchUserData();
   }, [navigate]);
+  
 
   return (
     <div style={{ padding: '20px' }}>
@@ -44,7 +52,8 @@ const UserHome = () => {
       </ul>
       <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
       <button onClick={() => navigate('/settings')}>Settings</button>
-      {/* Add more navigation buttons or links as needed */}
+      <button onClick={() => navigate('/2FA', { state: { username: userName , isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
+
     </div>
   );
 };

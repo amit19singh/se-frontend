@@ -45,12 +45,16 @@ const RegisterPage = () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, user);
       localStorage.setItem('token', response.data.token);
-      navigate('/verify-account');
-      console.log('User registered:', response.data);
-      // Redirect to login page or display success message
+      console.log("response: " + response)
+      alert("Please verify your account by clicking on the link sent to your email, and close this tab");
     } catch (error) {
       console.error('Registration error:', error.response.data);
-      // Handle errors, e.g., show error message to the user
+      const errorMessage = error.response && error.response.data ? error.response.data : "An unexpected error occurred.";
+      if (errorMessage == "Email already in use. Please use a different email.")
+        alert("Email already in use. Please use a different email.");
+      else 
+        setErrorMessage("An unexpected error occurred during registration" );
+      window.scrollTo(0, 0);
     }
   };
 
