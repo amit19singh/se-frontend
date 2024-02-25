@@ -1,0 +1,33 @@
+body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f7f7f7; /* Consistent background with the container */
+  }
+  
+  h1 {
+    color: #3b5998;
+    font-size: 2.5rem;
+    margin-bottom: 0.5em; /* Adds a little space below the heading */
+  }
+  
+  p {
+    color: #3b5998;
+    font-size: 1.2rem;
+    margin-bottom: 2em; /* Adds space above the buttons */
+  }
+  
+  button {
+    outline: none; /* Removes the outline to keep the buttons clean */
+  }
+  
+  button:hover {
+    background-color: #365899; /* A slightly darker blue on hover */
+    box-shadow: 0 4px 8px #666; /* Darker shadow for depth */
+    color: antiquewhite;
+  }
+  
+  button:active {
+    background-color: #2e4a86; /* Even darker for a pressed button effect */
+    box-shadow: inset 0 2px 4px #333; /* Inner shadow for a pressed effect */
+  }
+  

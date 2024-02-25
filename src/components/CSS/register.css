@@ -1,0 +1,76 @@
+/* register.css */
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    background-color: #f7f7f7;
+  }
+  
+  .register-header h2 {
+    color: #3b5998; /* Facebook blue for header text */
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .register-form {
+    width: 300px; /* Adjust width as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .register-input, .register-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .register-select {
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  .register-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #4267B2; /* Facebook blue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .register-button:hover {
+    background-color: #365899; /* Darker blue on hover */
+  }
+  
+  .error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .register-container {
+      padding: 10px;
+      box-shadow: none; /* remove shadow on smaller screens */
+    }
+  
+    .register-form {
+      width: 100%;
+    }
+  }
+  
