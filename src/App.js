@@ -11,6 +11,7 @@ import ResetPasswordComponent from './components/ResetPasswordComponent';
 import UsernameSubmissionComponent from './components/UsernameSubmissionComponent';
 import TwoFactorAuth from './components/TwoFactorAuth';
 import VerifyTwoFactorAuth from './components/VerifyTwoFactorAuth';
+import EditProfile from './components/EditProfile';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/UsernameSubmissionComponent" element={<UsernameSubmissionComponent />} />
           <Route path="/2FA" element={<TwoFactorAuth />} />
           <Route path="/verify2FA" element={<VerifyTwoFactorAuth />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
       </div>
     </Router>
