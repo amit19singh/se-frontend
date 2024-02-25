@@ -79,9 +79,9 @@ const UserHome = () => {
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error('File upload failed');
-      }
+      if (response.ok) {
+        alert('Successfully Posted');
+      } else {throw new Error('File upload failed');}
 
       const result = await response.json();
       console.log('Upload successful:', result);
