@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const EditProfile = () => {
   // State hooks for user information
@@ -11,6 +12,7 @@ const EditProfile = () => {
   const [livesIn, setLivesIn] = useState('');
   const [userHometown, setUserHometown] = useState('');
   const [relationshipStatus, setRelationshipStatus] = useState('');
+  const navigate = useNavigate();
 
   // Function to handle profile update
   const handleProfileUpdate = async () => {
@@ -51,7 +53,8 @@ const EditProfile = () => {
       });
 
       if (response.ok) {
-        alert("Profile updated successfully")
+        alert("Profile updated successfully");
+        navigate('/home');
       }
       else {throw new Error('Profile update failed');}
 
