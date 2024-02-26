@@ -6,16 +6,23 @@ const UserHome = () => {
   const [isTwoFactorEnabled, setisTwoFactorEnabled] = useState('');
   const [caption, setCaption] = useState('');
   const [postText, setPostText] = useState('');
+  const [createdAt, setcreatedAt] = useState('');
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
   const navigate = useNavigate();
 
+
+  // PAGE INIT
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
-        navigate('/'); // Redirect to login if no token found
+        // navigate('/'); // Redirect to login if no token found
+        handleLogout();
         return;
       }
   
@@ -26,15 +33,19 @@ const UserHome = () => {
             'Authorization': `Bearer ${token}`,
           },
         });
+
         if (!response.ok) {
           alert('Failed to fetch user data');
-          navigate('/login');
+          // navigate('/login');
+          handleLogout();
         }
         const data = await response.json();
         
         setPosts(data.posts);
         setUserName(data.username);
         setisTwoFactorEnabled(data.twoFactorEnabled);
+
+        console.log('POSTS:', data.posts);
         
         // console.log(`2FA: ${data.twoFactorEnabled}`);
 
@@ -42,6 +53,8 @@ const UserHome = () => {
           navigate('/verify2FA', { state: { username: userName } });
         }
       } catch (error) {
+        alert('Failed to fetch user data');
+          handleLogout();
         console.error('Error fetching user data:', error);
       }
     };
@@ -49,6 +62,8 @@ const UserHome = () => {
     fetchUserData();
   }, [navigate]);
   
+
+  // LOGOUT
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
@@ -63,6 +78,8 @@ const UserHome = () => {
     }
   };
 
+
+  // UPLOAD POSTS
   const handleUpload = async () => {
     const formData = new FormData();
     formData.append('caption', caption);
@@ -86,6 +103,7 @@ const UserHome = () => {
 
       if (response.ok) {
         alert('Successfully Posted');
+        window.location.reload();
       } else {throw new Error('File upload failed');}
 
       const result = await response.json();
@@ -93,6 +111,94 @@ const UserHome = () => {
       console.error('Error uploading:', error);
     }
   };
+  
+  
+
+  // DELETE POSTS
+  const handleDeletePost = async (postId) => {
+    // Confirm before deleting
+    const isConfirmed = window.confirm('Are you sure you want to delete this post?');
+    if (!isConfirmed) {
+      return; // Stop if not confirmed
+    }
+  
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user-posts/delete/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete the post');
+      }
+  
+      // Remove the post from the local state to update UI
+      setPosts(posts.filter(post => post.postId !== postId));
+      alert('Post deleted successfully');
+    } catch (error) {
+      console.error('Error deleting the post:', error);
+      alert('Error deleting the post');
+    }
+  };
+  
+
+  // SEARCH
+  const handleSearch = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      handleLogout();
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/search?query=${searchQuery}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Search failed');
+      }
+  
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error('Error during search:', error);
+    }
+  };
+
+
+  // Add Friends
+  const handleAddFriend = async (friendUsername) => {
+    const token = localStorage.getItem('token');
+    
+    console.log("userName: ", userName);
+    console.log("friendUsername: ", friendUsername);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/friends/request`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'text/plain',
+        },
+        body: friendUsername, 
+        // JSON.stringify({recipientUsername: friendUsername }),
+      });
+  
+      if (response.ok) {
+        alert('Friend request sent!');
+      } else {
+        alert('Failed to send friend request.');
+      }
+    } catch (error) {
+      console.error('Error sending friend request:', error);
+    }
+  };  
   
 
   return (
@@ -108,6 +214,15 @@ const UserHome = () => {
       <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
       <button onClick={() => navigate('/settings')}>Settings</button>
       <button onClick={() => navigate('/2FA', { state: { username: userName , isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
+      <div>
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
       <div style={{ padding: '20px' }}>
       {/* Existing UI elements */}
       <div>
@@ -132,6 +247,20 @@ const UserHome = () => {
     </div>
     <div>
     <div style={{ maxWidth: '500px', margin: 'auto' }}>
+
+    <div>
+      {searchResults.map((user, index) => (
+        <div key={index} style={{ padding: '10px', margin: '5px', border: '1px solid #ddd', borderRadius: '5px' }}>
+          <p>{user.firstname} {user.lastname} (@{user.username})</p>
+          {/* Implement functionality to view user profile or send friend request */}
+          <button onClick={() => navigate(`/user/${user.username}`)}>View Profile</button>
+          {/* <button onClick={() => navigate(`/user/add-friend/${user.username}`)}>Add Friend</button> */}
+          <button onClick={() => handleAddFriend(user.username)}>Add Friend</button>
+        </div>
+      ))}
+  </div>
+
+
   {posts.map((post, index) => (
     <div key={index} style={{
       border: '1px solid #ccc',
@@ -157,6 +286,8 @@ const UserHome = () => {
           Posted on: {new Date(post.createdAt).toLocaleString()}
         </div>
       )}
+      <button onClick={() => handleDeletePost(post.postId)}>Delete</button>
+
     </div>
   ))}
 </div>
@@ -166,5 +297,4 @@ const UserHome = () => {
 };
 
 export default UserHome;
-
 
