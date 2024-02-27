@@ -167,6 +167,10 @@ const UserHome = () => {
   
       const data = await response.json();
       setSearchResults(data);
+      // console.log("##user.requestStatus##:", user.requestStatus);
+      console.log("data:", data);
+      // const updatedData = data.map(user => ({ ...user, requestSent: false }));
+      // setSearchResults(updatedData);
     } catch (error) {
       console.error('Error during search:', error);
     }
@@ -192,6 +196,13 @@ const UserHome = () => {
   
       if (response.ok) {
         alert('Friend request sent!');
+        const updatedResults = searchResults.map(user => {
+          if (user.username === friendUsername) {
+            return { ...user, requestSent: true };
+          }
+          return user;
+        });
+        setSearchResults(updatedResults);
       } else {
         alert('Failed to send friend request.');
       }
@@ -213,7 +224,8 @@ const UserHome = () => {
       <button onClick={handleLogout}>Logout</button>
       <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
       <button onClick={() => navigate('/settings')}>Settings</button>
-      <button onClick={() => navigate('/2FA', { state: { username: userName , isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
+      <button onClick={() => navigate('/2FA', { state: { username: userName , 
+                                                isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
       <div>
         <input
           type="text"
@@ -251,12 +263,13 @@ const UserHome = () => {
     <div>
       {searchResults.map((user, index) => (
         <div key={index} style={{ padding: '10px', margin: '5px', border: '1px solid #ddd', borderRadius: '5px' }}>
-          <p>{user.firstname} {user.lastname} (@{user.username})</p>
-          {/* Implement functionality to view user profile or send friend request */}
-          <button onClick={() => navigate(`/user/${user.username}`)}>View Profile</button>
-          {/* <button onClick={() => navigate(`/user/add-friend/${user.username}`)}>Add Friend</button> */}
-          <button onClick={() => handleAddFriend(user.username)}>Add Friend</button>
-        </div>
+        <p>{user.firstname} {user.lastname} (@{user.username})</p>
+        <button onClick={() => navigate(`/user/${user.username}`)}>View Profile</button>
+        {user.requestSent === "NONE" && <button onClick={() => handleAddFriend(user.username)}>Add Friend</button>}
+        {user.requestSent === "PENDING" && <button disabled>Pending</button>}
+        {user.requestSent === "ACCEPTED" && <button disabled>Friends</button>}
+        {user.requestSent === "REJECTED" && <button onClick={() => handleAddFriend(user.username)}>Retry Add Friend</button>}
+      </div>
       ))}
   </div>
 
