@@ -12,55 +12,62 @@ const UserHome = () => {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
+  const [friendRequestsPending, setFriendRequestsPending] = useState([]);
+  const [friends, setFriends] = useState([]);
+  
 
   const navigate = useNavigate();
 
-
   // PAGE INIT
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        // navigate('/'); // Redirect to login if no token found
-        handleLogout();
-        return;
-      }
-  
-      try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userDetail`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          alert('Failed to fetch user data');
-          // navigate('/login');
-          handleLogout();
-        }
-        const data = await response.json();
-        
-        setPosts(data.posts);
-        setUserName(data.username);
-        setisTwoFactorEnabled(data.twoFactorEnabled);
-
-        console.log('POSTS:', data.posts);
-        
-        // console.log(`2FA: ${data.twoFactorEnabled}`);
-
-        if (isTwoFactorEnabled) {
-          navigate('/verify2FA', { state: { username: userName } });
-        }
-      } catch (error) {
-        alert('Failed to fetch user data');
-          handleLogout();
-        console.error('Error fetching user data:', error);
-      }
-    };
-  
     fetchUserData();
   }, [navigate]);
+
+  const fetchUserData = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // navigate('/'); // Redirect to login if no token found
+      handleLogout();
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userDetail`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        alert('Failed to fetch user data');
+        // navigate('/login');
+        handleLogout();
+      }
+      const data = await response.json();
+      
+      // SET USER INFO
+      setPosts(data.posts);
+      setUserName(data.username);
+      setisTwoFactorEnabled(data.twoFactorEnabled);
+      setFriendRequests(data.friendRequestsPending);
+      setFriends(data.friends);
+
+      console.log('POSTS:', data.posts);
+      console.log('DATA:', data);
+      
+      // console.log(`2FA: ${data.twoFactorEnabled}`);
+
+      if (isTwoFactorEnabled) {
+        navigate('/verify2FA', { state: { username: userName } });
+      }
+    } catch (error) {
+        handleLogout();
+      console.error('Error fetching user data:', error);
+    }
+  };
+
   
 
   // LOGOUT
@@ -108,6 +115,7 @@ const UserHome = () => {
 
       const result = await response.json();
     } catch (error) {
+      alert('All fields are empty!')
       console.error('Error uploading:', error);
     }
   };
@@ -169,8 +177,6 @@ const UserHome = () => {
       setSearchResults(data);
       // console.log("##user.requestStatus##:", user.requestStatus);
       console.log("data:", data);
-      // const updatedData = data.map(user => ({ ...user, requestSent: false }));
-      // setSearchResults(updatedData);
     } catch (error) {
       console.error('Error during search:', error);
     }
@@ -203,14 +209,68 @@ const UserHome = () => {
           return user;
         });
         setSearchResults(updatedResults);
+        console.log('updatedResults: ', updatedResults);
       } else {
         alert('Failed to send friend request.');
       }
     } catch (error) {
       console.error('Error sending friend request:', error);
     }
+    fetchUserData();
   };  
+
+  const handleAcceptRequest = async (requestId) => {
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/friends/accept/${requestId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (response.ok) {
+            alert('Friend request accepted!');
+            fetchUserData(); // Refetch user data to update UI
+        } else {
+            alert('Failed to accept friend request.');
+        }
+    } catch (error) {
+        console.error('Error accepting friend request:', error);
+    }
+};
+
   
+
+  const handleRejectRequest = async (requestId) => {
+    const token = localStorage.getItem('token');
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/friends/reject/${requestId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'text/plain',
+        },
+      });
+  
+      if (response.ok) {
+        alert('Friend request rejected.');
+        // Filter out the rejected request from the friendRequestsPending state
+        const updatedRequests = friendRequestsPending.filter(request => request.id !== requestId);
+        // setFriendRequestsPending(updatedRequests);
+      } else {
+        alert('Failed to reject friend request.');
+      }
+    } catch (error) {
+      console.error('Error rejecting friend request:', error);
+    }
+    
+    fetchUserData();
+  };
+  
+
 
   return (
     <div style={{ padding: '20px' }}>
@@ -226,6 +286,8 @@ const UserHome = () => {
       <button onClick={() => navigate('/settings')}>Settings</button>
       <button onClick={() => navigate('/2FA', { state: { username: userName , 
                                                 isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
+      <button onClick={() => navigate('/friends', { state: { friends: friends } })}>View Friends</button>
+     
       <div>
         <input
           type="text"
@@ -272,6 +334,19 @@ const UserHome = () => {
       </div>
       ))}
   </div>
+
+{/* ACCEPT/REJECT REQUESTS */}
+  <div>
+    <h3>Friend Requests</h3>
+    {friendRequests.map((request) => (
+        <div key={request.id}>
+            <p>{request.username} wants to be friends.</p>
+            <button onClick={() => handleAcceptRequest(request.id)}>Accept</button>
+            <button onClick={() => handleRejectRequest(request.id)}>Reject</button>
+        </div>
+    ))}
+</div>
+
 
 
   {posts.map((post, index) => (

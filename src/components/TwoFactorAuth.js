@@ -87,19 +87,5 @@ const TwoFactorAuth = () => {
   );
 };
 
-//   return (
-//     <div>
-//       {!is2FAEnabled && (
-//         <button onClick={handleEnable2FA}>Enable 2FA</button>
-//       )}
-//       {qrCodeUrl && (
-//         <div>
-//           <p>Scan this QR code with your 2FA app:</p>
-//           <img src={qrCodeUrl} alt="QR Code" />
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
 
 export default TwoFactorAuth;

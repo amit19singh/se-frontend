@@ -12,6 +12,7 @@ import UsernameSubmissionComponent from './components/UsernameSubmissionComponen
 import TwoFactorAuth from './components/TwoFactorAuth';
 import VerifyTwoFactorAuth from './components/VerifyTwoFactorAuth';
 import EditProfile from './components/EditProfile';
+import FriendsList from './components/FriendsList';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/2FA" element={<TwoFactorAuth />} />
           <Route path="/verify2FA" element={<VerifyTwoFactorAuth />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/friends" element={<FriendsList />} />
         </Routes>
       </div>
     </Router>
