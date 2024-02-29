@@ -290,6 +290,27 @@ const UserHome = () => {
     }
   };
   
+    // BLOCK A USER
+    const handleUnblockUser = async (userId) => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/friends/unblock/${userId}`, {
+          method: 'POST', // Assuming your API uses POST for blocking
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+    
+        if (response.ok) {
+          alert('User blocked successfully');
+          // Optionally update local state to reflect the change
+        } else {
+          alert('Failed to block user');
+        }
+      } catch (error) {
+        console.error('Error blocking user:', error);
+      }
+    };
 
   const handleRejectRequest = async (requestId) => {
     const token = localStorage.getItem('token');
@@ -380,6 +401,7 @@ const UserHome = () => {
         {user.requestSent === "NONE" && <button onClick={() => handleAddFriend(user.username)}>Add Friend</button>}
         {user.requestSent === "PENDING" && <button disabled>Pending</button>}
         {user.requestSent === "ACCEPTED" && <button disabled>Friends</button>}
+        {user.requestSent === "BLOCKED" && <button onClick={() => handleUnblockUser(user.id)}>Unblock</button>}
       </div>
       ))}
   </div>
