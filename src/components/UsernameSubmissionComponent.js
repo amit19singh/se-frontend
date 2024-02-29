@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import styles from './CSS/UsernameSubmissionComponent.module.css';
+
 
 const UsernameSubmissionComponent = () => {
   const [username, setUsername] = useState('');
@@ -35,17 +37,18 @@ const UsernameSubmissionComponent = () => {
   };
 
   return (
-    <div>
-      <h2>Enter Username</h2>
-      <form onSubmit={handleSubmit}>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Enter Username</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
           required
+          className={styles.input}
         />
-        <button type="submit">Next</button>
+        <button type="submit" className={styles.button}>Next</button>
       </form>
     </div>
   );

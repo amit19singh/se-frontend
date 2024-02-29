@@ -180,6 +180,7 @@ const UserHome = () => {
     } catch (error) {
       console.error('Error during search:', error);
     }
+    fetchUserData();
   };
 
 
@@ -219,6 +220,7 @@ const UserHome = () => {
     fetchUserData();
   };  
 
+  // ACCEPT FRIENDS REQUEST
   const handleAcceptRequest = async (requestId) => {
     const token = localStorage.getItem('token');
 
@@ -239,8 +241,54 @@ const UserHome = () => {
     } catch (error) {
         console.error('Error accepting friend request:', error);
     }
+    fetchUserData();
 };
 
+// REMOVE FRIEND
+  const handleRemoveFriend = async (friendId) => {
+    console.log("FRIEND-ID:", friendId);
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/friends/remove/${friendId}`, {
+        method: 'POST', // or 'DELETE', depending on your API
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        alert('Friend removed successfully');
+        // Update local state to reflect the change
+        setFriends(friends.filter(friend => friend.id !== friendId));
+      } else {
+        alert('Failed to remove friend');
+      }
+    } catch (error) {
+      console.error('Error removing friend:', error);
+    }
+  };
+
+  // BLOCK A USER
+  const handleBlockUser = async (userId) => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/friends/block/${userId}`, {
+        method: 'POST', // Assuming your API uses POST for blocking
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        alert('User blocked successfully');
+        // Optionally update local state to reflect the change
+      } else {
+        alert('Failed to block user');
+      }
+    } catch (error) {
+      console.error('Error blocking user:', error);
+    }
+  };
   
 
   const handleRejectRequest = async (requestId) => {
@@ -259,7 +307,7 @@ const UserHome = () => {
         alert('Friend request rejected.');
         // Filter out the rejected request from the friendRequestsPending state
         const updatedRequests = friendRequestsPending.filter(request => request.id !== requestId);
-        // setFriendRequestsPending(updatedRequests);
+        setFriendRequestsPending(updatedRequests);
       } else {
         alert('Failed to reject friend request.');
       }
@@ -326,11 +374,12 @@ const UserHome = () => {
       {searchResults.map((user, index) => (
         <div key={index} style={{ padding: '10px', margin: '5px', border: '1px solid #ddd', borderRadius: '5px' }}>
         <p>{user.firstname} {user.lastname} (@{user.username})</p>
+        <button onClick={() => handleRemoveFriend(user.id)}>Remove Friend</button>
+        <button onClick={() => handleBlockUser(user.id)}>Block</button>
         <button onClick={() => navigate(`/user/${user.username}`)}>View Profile</button>
         {user.requestSent === "NONE" && <button onClick={() => handleAddFriend(user.username)}>Add Friend</button>}
         {user.requestSent === "PENDING" && <button disabled>Pending</button>}
         {user.requestSent === "ACCEPTED" && <button disabled>Friends</button>}
-        {user.requestSent === "REJECTED" && <button onClick={() => handleAddFriend(user.username)}>Retry Add Friend</button>}
       </div>
       ))}
   </div>

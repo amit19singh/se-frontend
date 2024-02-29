@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import styles from './CSS/LoginPage.module.css';
 
 const LoginPage = () => {
   const [credentials, setCredentials] = useState({
@@ -45,18 +46,19 @@ const LoginPage = () => {
     }
   };
 
-  return (
-    <div>
-      <h2>Login with Google</h2>
-      <a href="http://localhost:8080/oauth2/authorization/google">Login with Google</a>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+return (
+    <div className={styles.container}>
+      <h2 className={styles.title}>Login with Google</h2>
+      <a href="http://localhost:8080/oauth2/authorization/google" className={styles.oauthLink}>Login with Google</a>
+      <h2 className={styles.title}>Login</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <input
           name="usernameOrEmail"
           type="text"
           value={credentials.usernameOrEmail}
           onChange={handleChange}
           placeholder="Username or Email"
+          className={styles.input}
         />
         <input
           name="password"
@@ -64,10 +66,11 @@ const LoginPage = () => {
           value={credentials.password}
           onChange={handleChange}
           placeholder="Password"
+          className={styles.input}
         />
-        <button type="submit">Login</button>
+        <button type="submit" className={styles.button}>Login</button>
       </form>
-      <p onClick={() => navigate('/UsernameSubmissionComponent')} style={{cursor: 'pointer', color: 'blue'}}>Forgot Password?</p>
+      <p onClick={() => navigate('/UsernameSubmissionComponent')} className={styles.link}>Forgot Password?</p>
     </div>
   );
 };

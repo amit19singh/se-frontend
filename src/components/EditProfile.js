@@ -1,32 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styles from './CSS/EditProfile.module.css';
 
 const EditProfile = () => {
-  // State hooks for user information
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState('');
   const [profilePicUrl, setProfilePicUrl] = useState(null);
-//   const [profilePicUrl, setProfilePicUrl] = useState('');
   const [livesIn, setLivesIn] = useState('');
   const [userHometown, setUserHometown] = useState('');
   const [relationshipStatus, setRelationshipStatus] = useState('');
   const navigate = useNavigate();
 
-  // Function to handle profile update
+  
   const handleProfileUpdate = async () => {
-    // const userDTO = {
-    //   firstname: firstName,
-    //   lastname: lastName,
-    //   birthday,
-    //   gender,
-    //   profilePicUrl,
-    //   livesIn,
-    //   userHometown,
-    //   relationshipStatus,
-    // };
-
     const formData = new FormData();
     formData.append('firstname', firstName);
     formData.append('lastname', lastName);
@@ -46,9 +34,7 @@ const EditProfile = () => {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-        //   'Content-Type': 'application/json',
         },
-        // body: JSON.stringify(userDTO),
         body: formData,
       });
 
@@ -60,44 +46,44 @@ const EditProfile = () => {
 
       const result = await response.json();
     //   console.log('Profile updated successfully:', result);
-      // Handle success (e.g., show success message, update UI)
     } catch (error) {
       console.error('Error updating profile:', error);
-      // Handle error (e.g., show error message)
     }
   };
 
-  return (
-    <div>
-      <h2>Edit Profile</h2>
-      <form onSubmit={(e) => {
+return (
+  <div className={styles.container}>
+    <h2 className={styles.title}>Edit Profile</h2>
+    <form onSubmit={(e) => {
         e.preventDefault();
         handleProfileUpdate();
-      }}>
-        <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-        <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-        <input type="date" placeholder="Birthday" value={birthday} onChange={(e) => setBirthday(e.target.value)} />
-        <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
-        {/* <input type="text" placeholder="Profile Picture URL" value={profilePicUrl} onChange={(e) => setProfilePicUrl(e.target.value)} /> */}
-        <input type="file" placeholder="Profile Picture URL" accept="image/*" onChange={(e) => setProfilePicUrl(e.target.files[0])} />
-        <input type="text" placeholder="Lives In" value={livesIn} onChange={(e) => setLivesIn(e.target.value)} />
-        <input type="text" placeholder="Hometown" value={userHometown} onChange={(e) => setUserHometown(e.target.value)} />
-        <select value={relationshipStatus} onChange={(e) => setRelationshipStatus(e.target.value)}>
-          <option value="">Select Relationship Status</option>
-          <option value="single">Single</option>
-          <option value="in_a_relationship">In a Relationship</option>
-          <option value="married">Married</option>
-          <option value="complicated">It's Complicated</option>
-        </select>
-        <button type="submit">Update Profile</button>
-      </form>
-    </div>
-  );
+      }} 
+      className={styles.form}
+    >
+      <input className={styles.input} type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+      <input className={styles.input} type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+      <input className={styles.input} type="date" placeholder="Birthday" value={birthday} onChange={(e) => setBirthday(e.target.value)} />
+      <select className={styles.select} value={gender} onChange={(e) => setGender(e.target.value)}>
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <input className={styles.fileInput} type="file" placeholder="Profile Picture URL" accept="image/*" onChange={(e) => setProfilePicUrl(e.target.files[0])} />
+      <input className={styles.input} type="text" placeholder="Lives In" value={livesIn} onChange={(e) => setLivesIn(e.target.value)} />
+      <input className={styles.input} type="text" placeholder="Hometown" value={userHometown} onChange={(e) => setUserHometown(e.target.value)} />
+      <select className={styles.select} value={relationshipStatus} onChange={(e) => setRelationshipStatus(e.target.value)}>
+        <option value="">Select Relationship Status</option>
+        <option value="single">Single</option>
+        <option value="in_a_relationship">In a Relationship</option>
+        <option value="married">Married</option>
+        <option value="complicated">It's Complicated</option>
+      </select>
+      <button className={styles.button} type="submit">Update Profile</button>
+    </form>
+  </div>
+);
 };
+
 
 export default EditProfile;

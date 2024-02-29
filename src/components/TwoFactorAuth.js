@@ -6,12 +6,9 @@ const TwoFactorAuth = () => {
   const location = useLocation();
   const [isQRCodeGenerated, setIsQRCodeGenerated] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
-  const [otp, setOtp] = useState('');
   
   const userName = location.state?.username;
   const is2FAEnabled = location.state?.isTwoFactorEnabled;
-  // console.log(`username: ${userName}`);
-  // console.log(`is2FAEnabled: ${is2FAEnabled}`);
 
   const handleEnable2FA = async () => {
     if (is2FAEnabled) {
@@ -53,7 +50,6 @@ const TwoFactorAuth = () => {
       if (response.ok) {
         alert('2FA disabled successfully.');
         navigate('/home'); // UserHome
-        // Optionally, update local state or context to reflect the change
       } else {
         alert('Failed to disable 2FA. Please try again.');
       }
