@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
         console.error('Could not fetch user details.');
       }
     } catch (error) {
+      logout();
       console.error('Error fetching user details:', error);
     }
   });

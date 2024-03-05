@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { useUserActions } from './UserActionsContext';
-import './CSS/UserHome.css';
 
 const UserHome = () => {
   const [userName, setUserName] = useState('');
@@ -33,7 +32,7 @@ const UserHome = () => {
       if (!user && token) {
         await fetchUserDetails(token); 
       } else if (!token) {
-        navigate('/');
+        handleLogout();
         return; 
       }
   
@@ -166,23 +165,21 @@ const UserHome = () => {
 
 
   return (
-    // <div style={{ padding: '20px' }}>
-    //   <h2>Welcome to Your Dashboard, {userName || 'User'}!</h2>
-    //   <p>This is your personalized user home page. From here, you can:</p>
-    //   <ul>
-    //     <li>View your profile</li>
-    //     <li>Access your settings</li>
-    //     <li>Explore available features</li>
-    //   </ul>
-    <div className="user-home">
-      <aside className="left-bar">
-        <button onClick={handleLogout}>Logout</button>
-        <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
-        <button onClick={() => navigate('/settings')}>Settings</button>
-        <button onClick={() => navigate('/2FA', { state: { username: userName , 
-                                                  isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
-        <button onClick={() => navigate('/friends', { state: { friends: friends } })}>View Friends</button>
-          </aside>
+    <div style={{ padding: '20px' }}>
+      <h2>Welcome to Your Dashboard, {userName || 'User'}!</h2>
+      <p>This is your personalized user home page. From here, you can:</p>
+      <ul>
+        <li>View your profile</li>
+        <li>Access your settings</li>
+        <li>Explore available features</li>
+      </ul>
+      <button onClick={handleLogout}>Logout</button>
+      <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
+      <button onClick={() => navigate('/settings')}>Settings</button>
+      <button onClick={() => navigate('/2FA', { state: { username: userName , 
+                                                isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
+      <button onClick={() => navigate('/friends', { state: { friends: friends } })}>View Friends</button>
+     
      {/* SEARCH */}
       <div>
         <input
@@ -212,7 +209,6 @@ const UserHome = () => {
   </div>
       
       {/* UPLOAD POSTS */}
-      <div className="upload-post">
       <div>
         <label>
           Caption:
@@ -235,7 +231,7 @@ const UserHome = () => {
     </div>
     <div>
     <div style={{ maxWidth: '500px', margin: 'auto' }}>
-    </div>
+
 
 {/* ACCEPT/REJECT REQUESTS */}
   <div>

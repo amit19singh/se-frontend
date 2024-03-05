@@ -12,6 +12,7 @@ import TwoFactorAuth from './components/TwoFactorAuth';
 import VerifyTwoFactorAuth from './components/VerifyTwoFactorAuth';
 import EditProfile from './components/EditProfile';
 import FriendsList from './components/FriendsList';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -21,19 +22,55 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/account_verified" element={<AccountVerified />} />
-          <Route path="/verification-failure" element={<VerificationFailure />} />
+ 
+          <Route path="/account_verified" element={
+            <ProtectedRoute sequentialAccessRequired={true} redirectTo="/">
+              <AccountVerified />
+            </ProtectedRoute>
+          } />
+          <Route path="/verification-failure" element={
+            <ProtectedRoute sequentialAccessRequired={true} redirectTo="/">
+            <VerificationFailure />
+            </ProtectedRoute>
+          } />
           
           <Route path="/home" element={<UserHome />} />
 
-          <Route path="/UsernameSubmissionComponent" element={<UsernameSubmissionComponent />} />
-          <Route path="/ResetPasswordComponent" element={<ResetPasswordComponent />} />
-          <Route path="/ResetPasswordPage" element={<ResetPasswordPage />} />
+          <Route path="/UsernameSubmissionComponent" element={
+              <ProtectedRoute requireAuth={true}>
+                <UsernameSubmissionComponent />
+              </ProtectedRoute>
+            } />
+
+          <Route path="/ResetPasswordComponent" element={
+              <ProtectedRoute requireAuth={true}>
+               <ResetPasswordComponent />
+              </ProtectedRoute>
+            } />
+
+          <Route path="/ResetPasswordPage" element={
+              <ProtectedRoute requireAuth={true}>
+                <ResetPasswordPage />
+              </ProtectedRoute>
+            } />
           
-          <Route path="/2FA" element={<TwoFactorAuth />} />
-          <Route path="/verify2FA" element={<VerifyTwoFactorAuth />} />
+          <Route path="/2FA" element={
+              <ProtectedRoute requireAuth={true}>
+                <TwoFactorAuth />
+              </ProtectedRoute>
+            } />
+
+          <Route path="/verify2FA" element={
+              <ProtectedRoute requireAuth={true}>
+                <VerifyTwoFactorAuth />
+              </ProtectedRoute>
+            } />
           
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/edit-profile" element={
+              <ProtectedRoute requireAuth={true}>
+                <EditProfile />
+              </ProtectedRoute>
+            } />
           
           <Route path="/friends" element={<FriendsList />} />
         </Routes>
