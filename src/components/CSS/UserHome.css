@@ -1,0 +1,25 @@
+.user-home {
+        display: grid;
+        grid-template-columns: 250px 1fr 250px;
+        gap: 20px;
+        padding: 20px;
+      }
+      
+      .left-bar, .right-bar {
+        background-color: #f0f2f5;
+        padding: 20px;
+        border-radius: 10px;
+      }
+      
+      .center-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .posts-container, .upload-post {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+      }
+      

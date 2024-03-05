@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { verifyOtpSuccess, verifyOtpFailure } from '../actions/authActions';
+
 
 const VerifyTwoFactorAuth = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [otp, setOtp] = useState('');
-  
-  // Assuming the username is passed via location state for continuity, adjust as needed
+  const dispatch = useDispatch();
+
   const userName = location.state?.username;
 
   const verifyOtp = async () => {
@@ -22,15 +25,18 @@ const VerifyTwoFactorAuth = () => {
       });
       if (response.ok) {
         alert('2FA verification successful');
-        // Navigate to the dashboard or next page as needed
-        navigate('/home');
+        dispatch(verifyOtpSuccess()); 
+        navigate('/home'); 
       } else {
         alert('Invalid OTP. Please try again.');
+        dispatch(verifyOtpFailure('Invalid OTP')); 
       }
     } catch (error) {
       console.error('Error verifying OTP:', error);
+      dispatch(verifyOtpFailure(error.message)); 
     }
   };
+  
 
   return (
     <div>

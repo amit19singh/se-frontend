@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { registerSuccess, registerFailure } from '../actions/authActions'; 
 import axios from 'axios';
 import styles from './CSS/RegisterPage.module.css';
 
@@ -19,6 +21,11 @@ const RegisterPage = () => {
 
   const [errorMessage, setErrorMessage] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [passwordError, setPasswordError] = useState('');
+  const [isPasswordComplex, setIsPasswordComplex] = useState(true);
+  const [doPasswordsMatch, setDoPasswordsMatch] = useState(true);
 
 
   const handleChange = (e) => {
@@ -27,7 +34,25 @@ const RegisterPage = () => {
       ...prevState,
       [name]: value
     }));
+  
+    if (name === "password" || name === "confirmPassword") {
+      if (name === "password" && !validatePasswordComplexity(value)) {
+        setIsPasswordComplex(false);
+        setPasswordError('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one symbol.');
+      } else {
+        setIsPasswordComplex(true);
+        setPasswordError('');
+      }
+  
+      const otherValue = name === "password" ? confirmPassword : user.password;
+      if (value !== otherValue) {
+        setDoPasswordsMatch(false);
+      } else {
+        setDoPasswordsMatch(true);
+      }
+    }
   };
+  
 
   const calculateAge = (birthday) => {
     const birthDate = new Date(birthday);
@@ -36,8 +61,19 @@ const RegisterPage = () => {
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
+  const validatePasswordComplexity = (password) => {
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordPattern.test(password);
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isPasswordComplex || !doPasswordsMatch) {
+    alert("Please correct the highlighted errors before submitting.");
+    return;
+  }
 
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordPattern.test(user.password)) {
@@ -58,24 +94,32 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, user);
-      localStorage.setItem('token', response.data.token);
-      console.log("response: " + response)
-      alert("Please verify your account by clicking on the link sent to your email, and close this tab");
+      if (response.status === 200 || response.status === 201) { 
+        console.log("Registration successful", response.data);
+        localStorage.setItem('token', response.data.token);
+  
+        dispatch(registerSuccess(response.data.user));
+        
+        alert("Please verify your account by clicking on the link sent to your email.");
+        navigate('/');
+      } else {
+        console.error('Registration failed: Unexpected response');
+        dispatch(registerFailure('Unexpected response'));
+      }
     } catch (error) {
-      console.error('Registration error:', error.response.data);
-      const errorMessage = error.response && error.response.data ? error.response.data : "An unexpected error occurred.";
-      if (errorMessage == "Email already in use. Please use a different email.")
-        alert("Email already in use. Please use a different email.");
-      else 
-        setErrorMessage("An unexpected error occurred during registration" );
-      window.scrollTo(0, 0);
+      console.error('Registration error:', error.response ? error.response.data : error.message);
+      const message = error.response && error.response.data && error.response.data.message ? error.response.data.message : "An unexpected error occurred.";
+    setErrorMessage(message); 
+      dispatch(registerFailure(errorMessage));
     }
   };
-
+  
   return (
     <div className={styles.container}>
       <h2>Register</h2>
       {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+      {!isPasswordComplex && <p className={styles.errorMessage}>{passwordError}</p>}
+      {!doPasswordsMatch && <p className={styles.errorMessage}>Passwords do not match.</p>}
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           name="firstname"
