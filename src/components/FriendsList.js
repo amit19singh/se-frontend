@@ -67,6 +67,7 @@ function FriendsList() {
               {friend.firstname} {friend.lastname} (@{friend.username})
               <button onClick={() => removeFriend(friend.id)}>Remove Friend</button>
               <button onClick={() => blockUser(friend.id)}>Block</button>
+              <button onClick={() => navigate(`/user/${friend.username}`)}>View Profile</button>
             </li>
           ))}
         </ul>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { useUserActions } from './UserActionsContext';
+import { likePost, unlikePost } from '../actions/postActions';
 
 const UserHome = () => {
   const [userName, setUserName] = useState('');
@@ -16,14 +18,15 @@ const UserHome = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [friendRequestsPending, setFriendRequestsPending] = useState([]);
   const [friends, setFriends] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 
   const { user, logout, fetchUserDetails } = useAuth();
-  const { handleUpload, handleDeletePost, handleSearch, handleAddFriend, handleAcceptRequest, handleRemoveFriend, 
+  const { handleUpload, handleDeletePost, handleLikePost, handleUnlikePost, handleSearch, handleAddFriend, handleAcceptRequest, handleRemoveFriend, 
     handleRejectRequest, handleBlockUser, handleUnblockUser } = useUserActions();
   
 
-  const navigate = useNavigate();
 
   // PAGE INIT
   useEffect(() => {
@@ -81,6 +84,22 @@ const UserHome = () => {
     if (success) {
       setPosts(currentPosts => currentPosts.filter(post => post.postId !== postId));
     }
+  };
+
+  // LIKE POSTS
+  const onLikePost = async (postId) => {
+    console.log("POSTID: ", postId);
+    const success = await handleLikePost(postId);
+    if (!success)
+      console.log("ERROR WHILE LIKING. (INSIDE USERHOME)")
+  };
+
+  // UNLIKE POSTS
+  const onUnlikePost = async (postId) => {
+    console.log("POSTID: ", postId);
+    const success = await handleUnlikePost(postId);
+    if (!success)
+      console.log("ERROR WHILE LIKING. (INSIDE USERHOME)")
   };
 
 
@@ -272,6 +291,8 @@ const UserHome = () => {
           Posted on: {new Date(post.createdAt).toLocaleString()}
         </div>
       )}
+      <button onClick={() => onLikePost(post.postId)}>Like</button>
+      <button onClick={() => onUnlikePost(post.postId)}>Unlike</button>
       <button onClick={() => onDeletePost(post.postId)}>Delete</button>
 
     </div>

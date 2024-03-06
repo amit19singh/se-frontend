@@ -63,6 +63,35 @@ export const UserActionsProvider = ({ children }) => {
     }
   }, [token]);
 
+  // LIKE POSTS
+  const handleLikePost = async (postId) => {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user-posts/like/${postId}`, { method: 'POST', 
+      headers: { 
+        'Authorization': `Bearer ${token}` 
+        } 
+      });
+      if (response.status !== 200) {
+        alert('Error liking the post');
+        throw new Error('Failed to Like the post');
+      }
+      return response.ok;
+  };
+
+
+  // UNLIKE POSTS
+  const handleUnlikePost = async (postId) => {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user-posts/unlike/${postId}`, { method: 'POST', 
+    headers: { 
+      'Authorization': `Bearer ${token}` 
+      } 
+    });
+    if (response.status !== 200) {
+      alert('Error unliking the post');
+      throw new Error('Failed to Unlike the post');
+    }
+      return response.ok;
+  };
+
 
   // HANDLE SEARCH
   const handleSearch = useCallback(async (searchQuery) => {
@@ -264,7 +293,7 @@ export const UserActionsProvider = ({ children }) => {
 
 
   return (
-    <UserActionsContext.Provider value={{ handleUpload, handleDeletePost, handleSearch,handleAddFriend, handleAcceptRequest, 
+    <UserActionsContext.Provider value={{ handleUpload, handleDeletePost, handleLikePost, handleUnlikePost, handleSearch,handleAddFriend, handleAcceptRequest, 
       handleRemoveFriend, handleRejectRequest, handleBlockUser, handleUnblockUser }}>
       {children}
     </UserActionsContext.Provider>
