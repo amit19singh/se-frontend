@@ -8,9 +8,9 @@ export const VERIFY_OTP_SUCCESS = 'VERIFY_OTP_SUCCESS';
 export const VERIFY_OTP_FAILURE = 'VERIFY_OTP_FAILURE';
 
 // Login action creators
-export const loginSuccess = (token) => ({
+export const loginSuccess = (token, userDetails) => ({
   type: LOGIN_SUCCESS,
-  payload: token,
+  payload: { token, userDetails},
 });
 
 export const loginFailure = (error) => ({
@@ -38,3 +38,4 @@ export const verifyOtpFailure = (error) => ({
   type: VERIFY_OTP_FAILURE,
   payload: error,
 });
+

@@ -13,6 +13,7 @@ import VerifyTwoFactorAuth from './components/VerifyTwoFactorAuth';
 import EditProfile from './components/EditProfile';
 import FriendsList from './components/FriendsList';
 import ProtectedRoute from './components/ProtectedRoute';
+import ProfilePage from './components/ProfilePage';
 
 function App() {
   return (
@@ -35,6 +36,12 @@ function App() {
           } />
           
           <Route path="/home" element={<UserHome />} />
+
+          <Route path="/user/:username" element={
+            <ProtectedRoute sequentialAccessRequired={true} redirectTo="/">
+              <ProfilePage />
+            </ProtectedRoute>
+          } />
 
           <Route path="/UsernameSubmissionComponent" element={
               <ProtectedRoute requireAuth={true}>

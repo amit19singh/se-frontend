@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
         return response.data;
       }
     } catch (error) {
+      logout();
       console.error('Login or user detail fetch error:', error.response ? error.response.data : error.message);
       throw error; 
     }

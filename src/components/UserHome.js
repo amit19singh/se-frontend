@@ -207,7 +207,7 @@ const UserHome = () => {
       </div>
       ))}
   </div>
-      
+
       {/* UPLOAD POSTS */}
       <div>
         <label>
