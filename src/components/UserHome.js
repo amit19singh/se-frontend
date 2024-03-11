@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Outlet } from 'react-router-dom';
-import { useAuth } from './AuthContext';
-import { useUserActions } from './UserActionsContext';
+import { useAuth } from '../context/AuthContext';
+import { useUserActions } from '../context/UserActionsContext';
 import { likePost, unlikePost } from '../actions/postActions';
 
-
-import Navbar from './navBar/Navbar';
-import LeftBar from './leftBar/LeftBar';
-import RightBar from './rightBar/RightBar';
 import Share from './share/Share';
+import Posts from './posts/Posts';
 
 const UserHome = () => {
   const [userName, setUserName] = useState('');
@@ -65,63 +62,6 @@ const UserHome = () => {
   };
 
   console.log("USER: ", user);
-
-  // POST UPLOADS
-  const handleFileChange = (event) => {
-    const { name, files } = event.target;
-    if (name === 'image') {
-      setImage(files[0]);
-    } else if (name === 'video') {
-      setVideo(files[0]);
-    }
-  };
-
-  const onUpload = async () => {
-    const formData = new FormData();
-    formData.append('caption', caption);
-    formData.append('post', postText);
-    if (image) formData.append('image', image);
-    if (video) formData.append('video', video);
-    await handleUpload(formData);
-
-  };
-
-  // POST DELETES
-  const onDeletePost = async (postId) => {
-    const success = await handleDeletePost(postId);
-    if (success) {
-      setPosts(currentPosts => currentPosts.filter(post => post.postId !== postId));
-    }
-  };
-
-  // LIKE POSTS
-  const onLikePost = async (postId) => {
-    console.log("POSTID: ", postId);
-    const success = await handleLikePost(postId);
-    if (!success)
-      console.log("ERROR WHILE LIKING. (INSIDE USERHOME)")
-  };
-
-  // UNLIKE POSTS
-  const onUnlikePost = async (postId) => {
-    console.log("POSTID: ", postId);
-    const success = await handleUnlikePost(postId);
-    if (!success)
-      console.log("ERROR WHILE LIKING. (INSIDE USERHOME)")
-  };
-
-
-  // SEARCH  
-    const onSearch = async () => {
-      try {
-        const results = await handleSearch(searchQuery);
-        setSearchResults(results);
-      } catch (error) {
-        alert('Search failed: ' + error.message);
-        setSearchResults([]); 
-      }
-    };
-
 
     // ADD FRIEND
     const onAddFriend = async (addFriendUsername) => {
@@ -192,11 +132,6 @@ const UserHome = () => {
 
 
   return (
-    // <h1>Hello</h1>
-    
-
-    
-    
       <div style={{ padding: '20px' }}>
         <h2>Welcome to Your Dashboard, {userName || 'User'}!</h2>
         <p>This is your personalized user home page. From here, you can:</p>
@@ -234,38 +169,7 @@ const UserHome = () => {
       ))}
   </div> */}
 
-
-
-    {posts.map((post, index) => (
-      <div key={index} style={{
-        border: '1px solid #ccc',
-        borderRadius: '10px',
-        padding: '10px',
-        marginBottom: '20px',
-        backgroundColor: '#fff',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        <p style={{ margin: '0 0 10px 0' }}>{post.post}</p>
-        {post.imageUrl && (
-          <img src={post.imageUrl} alt="Post" style={{ maxWidth: '100%', height: 'auto', display: 'block', marginBottom: '10px' }} />
-        )}
-        {post.videoUrl && (
-          <video controls style={{ maxWidth: '100%', height: 'auto', display: 'block', marginBottom: '10px' }}>
-            <source src={post.videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
-        {post.createdAt && (
-          <div style={{ color: '#777', fontSize: '0.8rem', marginTop: '10px' }}>
-            Posted on: {new Date(post.createdAt).toLocaleString()}
-          </div>
-        )}
-        <button onClick={() => onLikePost(post.postId)}>Like</button>
-        <button onClick={() => onUnlikePost(post.postId)}>Unlike</button>
-        <button onClick={() => onDeletePost(post.postId)}>Delete</button>
-
-      </div>
-    ))}
+    <Posts />
   </div>
   </div>
   </div>

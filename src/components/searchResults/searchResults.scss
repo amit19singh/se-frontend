@@ -1,0 +1,97 @@
+:root {
+    /* Color scheme */
+    --background-color: #f0f2f5;
+    --item-background-color: #ffffff;
+    --hover-background-color: #e2e6ea;
+    --primary-color: #3793f5d6;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #cb6872;
+    --warning-color: #c2a95f;
+    --info-color: #17a2b8;
+    --disabled-color: #6c757d;
+    --text-color: #343a40;
+    --border-color: #dee2e6;
+  
+    /* Typography */
+    --font-size-base: 1rem; /* 16px */
+    --font-size-sm: 0.875rem; /* 14px */
+  
+    /* Spacing */
+    --padding-base: 0.5rem;
+    --margin-base: 0.5rem;
+  
+    /* Border and shadow */
+    --border-radius: 0.25rem;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  
+    .user-item {
+      padding: var(--padding-base);
+      background-color:  var(--item-background-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      transition: box-shadow 0.3s ease;
+  
+      &:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+  
+      p {
+        margin: 0 0 var(--margin-base);
+        color: var(--text-color);
+        font-weight: bold;
+      }
+  
+      button {
+        padding: var(--padding-base);
+        margin-right: var(--margin-base);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: var(--font-size-sm);
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+  
+        &:not(:last-child) {
+          margin-right: var(--margin-base);
+        }
+  
+        &:hover {
+          transform: translateY(-2px);
+        }
+  
+        &:disabled {
+          background-color: var(--disabled-color);
+          color: #fff;
+          cursor: not-allowed;
+        }
+  
+        &.remove-friend {
+          background-color: var(--danger-color);
+          color: #fff;
+        }
+  
+        &.add-friend, &.view-profile {
+          background-color: var(--primary-color);
+          color: #fff;
+        }
+  
+        &.block, &.unblock {
+          background-color: var(--warning-color);
+          color: #fff;
+        }
+  
+        &.pending {
+          background-color: var(--secondary-color);
+          color: #fff;
+        }
+      }
+    }
+  }
+  

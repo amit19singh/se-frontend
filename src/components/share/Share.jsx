@@ -2,10 +2,10 @@ import "./share.scss";
 import Image from "../../assets/img.png";
 import Map from "../../assets/map.png";
 import Friend from "../../assets/friend.png";
-import { useAuth } from '../../components/AuthContext'; 
+import { useAuth } from '../../context/AuthContext'; 
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from 'react';
-import { useUserActions } from '../../components/UserActionsContext';
+import { useUserActions } from '../../context/UserActionsContext';
 
 const Share = () => {
 

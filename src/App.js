@@ -15,20 +15,43 @@ import FriendsList from './components/FriendsList';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProfilePage from './components/ProfilePage';
 import SearchResultsPage from './components/searchResults/searchResults';
+import { useDarkMode } from './context/DarkModeContext';
 
-
-import Navbar from './components/navBar/Navbar';
+import "./style.scss";
+import Navbar from './components/navBar/NavBar.jsx';
 import LeftBar from './components/leftBar/LeftBar';
 import RightBar from './components/rightBar/RightBar';
 
 
 function App() {
 
+  const themes = {
+    light: {
+      textColor: "#000",
+      bg: "white",
+      logo: "darkblue",
+      bgSoft: "#f6f3f3",
+      textColorSoft: "#555",
+      border: "ightgray",
+    },
+    dark: {
+      textColor: "whitesmoke",
+      bg: "#22303C",
+      logo: "white",
+      bgSoft: "#333",
+      textColorSoft: "lightgray",
+      border: "#444",
+    }
+  };
+  
+  const { toggle, darkMode } = useDarkMode();
+  const theme = darkMode ? themes.dark : themes.light;
+
   const Layout = () => {
+    console.log("LAYOUT: ", darkMode);
     return (
-      // <div className={`theme-${darkMode ? "dark" : "light"}`}>
-      
-      <div>
+    
+    <div style={{ color: theme.textColor, backgroundColor: theme.bg }}>
         <Navbar />
         <div style={{ display: "flex" }}>
           <LeftBar />
@@ -40,7 +63,6 @@ function App() {
       </div>
     );
   };
-
 
 
   return (

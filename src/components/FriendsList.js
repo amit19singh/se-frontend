@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useUserActions } from './UserActionsContext';
-import { useAuth } from './AuthContext';
+import { useUserActions } from '../context/UserActionsContext';
+import { useAuth } from '../context/AuthContext';
 
 
 function FriendsList() {
@@ -60,7 +60,7 @@ function FriendsList() {
 
     return (
       <div>
-        <h2>Friends List</h2>
+        <h2>Your Friends</h2>
         <ul>
           {friends.map((friend, index) => (
             <li key={index}>

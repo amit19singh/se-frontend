@@ -7,28 +7,33 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from '../../components/AuthContext'; 
-import { useUserActions } from '../../components/UserActionsContext';
+
+import { useAuth } from '../../context/AuthContext'; 
+import { useUserActions } from '../../context/UserActionsContext';
+import { useDarkMode } from '../../context/DarkModeContext';
+
 import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   
   const { user, logout, fetchUserDetails } = useAuth();
   const { handleSearch } = useUserActions();
+  const { toggle, darkMode } = useDarkMode();
+
+  const navigate = useNavigate();
   
   const [userName, setUserName] = useState('');
   const [isTwoFactorEnabled, setisTwoFactorEnabled] = useState('');
   const [profilePic, setProfilePicUrl] = useState('');
+  const [friendRequests, setFriendRequests] = useState([]);
+  const [friendRequestsPending, setFriendRequestsPending] = useState([]);
+  const [friends, setFriends] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
   const [showDropdown, setShowDropdown] = useState(false);
-
-  
-  const navigate = useNavigate();
-
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [settingsSubmenuVisible, setSettingsSubmenuVisible] = useState(false);
 
@@ -58,6 +63,9 @@ const Navbar = () => {
         setUserName(user.username || '');
         setisTwoFactorEnabled(user.twoFactorEnabled || false);
         setProfilePicUrl(user.profilePicUrlDisplay || '');
+        setisTwoFactorEnabled(user.twoFactorEnabled || false);
+        setFriendRequests(user.friendRequestsPending || []);
+        setFriends(user.friends || []);
       }
     }; fetchDetailsAndSetState();
   }, [user, navigate, fetchUserDetails]);
@@ -82,9 +90,12 @@ const Navbar = () => {
     if (event.key === 'Enter') {
         onSearch(); 
     }
-};
+  };
+
+  const handleNavigateHome = () => {
+    navigate('/home');
+  };
   
-  // console.log("USER in NAVBAR:", user);
 
   return (
     <div className="navbar">
@@ -92,12 +103,15 @@ const Navbar = () => {
         <Link to="/" style={{ textDecoration: "none" }}>
           <span>Anti Facebook</span>
         </Link>
-        <HomeOutlinedIcon />
-        {/* {darkMode ? (
+        <div onClick={handleNavigateHome} style={{ cursor: 'pointer' }}>
+          <HomeOutlinedIcon />
+        </div>
+
+        {darkMode ? (
           <WbSunnyOutlinedIcon onClick={toggle} />
         ) : (
           <DarkModeOutlinedIcon onClick={toggle} />
-        )} */}
+        )}
         <GridViewOutlinedIcon />
         
         
@@ -146,7 +160,7 @@ const Navbar = () => {
           {dropdownVisible && (
             <div className="dropdown">
               <ul>
-                <li>View Friends</li>
+                <li onClick={() =>  navigate('/friends', { state: { friends: friends } })}>View Friends</li>
                 <li onClick={toggleSettingsSubmenu}>Settings
                   {settingsSubmenuVisible && (
                     <ul className="submenu">

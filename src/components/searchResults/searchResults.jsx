@@ -1,6 +1,7 @@
+import "./searchResults.scss"
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useUserActions } from '../../components/UserActionsContext';
+import { useUserActions } from '../../context/UserActionsContext';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -30,9 +31,9 @@ const SearchResultsPage = () => {
   }, [query]);
 
   return (
-    <div>
+    <div class="user-list">
         {searchResults.map((user, index) => (
-            <div key={index} style={{ padding: '10px', margin: '5px', border: '1px solid #ddd', borderRadius: '5px' }}>
+            <div key={index}  class="user-item">
             <p>{user.firstname} {user.lastname} (@{user.username})</p>
             {/* <button onClick={() => removeFriend(user.id)}>Remove Friend</button>
             <button onClick={() => blockUser(user.id)}>Block</button>
@@ -41,9 +42,9 @@ const SearchResultsPage = () => {
               {user.requestSent === "PENDING" && <button disabled>Pending</button>}
               {user.requestSent === "ACCEPTED" && <button disabled>Friends</button>}
               {user.requestSent === "BLOCKED" && <button onClick={() => unblockUser(user.id)}>Unblock</button>} */}
-            <button>Remove Friend</button>
-            <button>Block</button>
-            <button onClick={() => navigate(`/user/${user.username}`)}>View Profile</button>
+            <button class="remove-friend">Remove Friend</button>
+            <button class="block">Block</button>
+            <button class="view-profile" onClick={() => navigate(`/user/${user.username}`)}>View Profile</button>
               {user.requestSent === "NONE" && <button>Add Friend</button>}
               {user.requestSent === "PENDING" && <button disabled>Pending</button>}
               {user.requestSent === "ACCEPTED" && <button disabled>Friends</button>}

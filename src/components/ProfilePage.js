@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserProfile } from '../actions/userProfileActions';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 const ProfilePage = () => {
   const { username } = useParams();

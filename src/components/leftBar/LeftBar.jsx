@@ -14,7 +14,7 @@ import Tutorials from "../../assets/11.png";
 import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
 
-import { useAuth } from '../../components/AuthContext'; 
+import { useAuth } from '../../context/AuthContext'; 
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
