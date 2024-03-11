@@ -41,11 +41,11 @@ const EditProfile = () => {
       if (response.ok) {
         alert("Profile updated successfully");
         navigate('/home');
+        window.location.reload();
       }
       else {throw new Error('Profile update failed');}
 
       const result = await response.json();
-    //   console.log('Profile updated successfully:', result);
     } catch (error) {
       console.error('Error updating profile:', error);
     }
@@ -57,6 +57,7 @@ return (
     <form onSubmit={(e) => {
         e.preventDefault();
         handleProfileUpdate();
+        
       }} 
       className={styles.form}
     >

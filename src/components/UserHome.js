@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { useUserActions } from './UserActionsContext';
 import { likePost, unlikePost } from '../actions/postActions';
+
+
+import Navbar from './navBar/Navbar';
+import LeftBar from './leftBar/LeftBar';
+import RightBar from './rightBar/RightBar';
+import Share from './share/Share';
 
 const UserHome = () => {
   const [userName, setUserName] = useState('');
@@ -57,6 +63,8 @@ const UserHome = () => {
     logout();
     navigate('/');
   };
+
+  console.log("USER: ", user);
 
   // POST UPLOADS
   const handleFileChange = (event) => {
@@ -184,122 +192,83 @@ const UserHome = () => {
 
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Welcome to Your Dashboard, {userName || 'User'}!</h2>
-      <p>This is your personalized user home page. From here, you can:</p>
-      <ul>
-        <li>View your profile</li>
-        <li>Access your settings</li>
-        <li>Explore available features</li>
-      </ul>
-      <button onClick={handleLogout}>Logout</button>
-      <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
-      <button onClick={() => navigate('/settings')}>Settings</button>
-      <button onClick={() => navigate('/2FA', { state: { username: userName , 
-                                                isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
-      <button onClick={() => navigate('/friends', { state: { friends: friends } })}>View Friends</button>
-     
-     {/* SEARCH */}
-      <div>
-        <input
-          type="text"
-          placeholder="Search users..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button onClick={onSearch}>Search</button>
-      </div>
+    // <h1>Hello</h1>
+    
 
+    
+    
       <div style={{ padding: '20px' }}>
+        <h2>Welcome to Your Dashboard, {userName || 'User'}!</h2>
+        <p>This is your personalized user home page. From here, you can:</p>
+        <ul>
+          <li>View your profile</li>
+          <li>Access your settings</li>
+          <li>Explore available features</li>
+        </ul>
+
+        <Share />
+        {/* <button onClick={handleLogout}>Logout</button>
+        <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
+        <button onClick={() => navigate('/settings')}>Settings</button>
+        <button onClick={() => navigate('/2FA', { state: { username: userName , 
+                                                  isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</button> 
+        <button onClick={() => navigate('/friends', { state: { friends: friends } })}>View Friends</button> */}
       
-    <div>
-      {searchResults.map((user, index) => (
-        <div key={index} style={{ padding: '10px', margin: '5px', border: '1px solid #ddd', borderRadius: '5px' }}>
-        <p>{user.firstname} {user.lastname} (@{user.username})</p>
-        <button onClick={() => removeFriend(user.id)}>Remove Friend</button>
-        <button onClick={() => blockUser(user.id)}>Block</button>
-        <button onClick={() => navigate(`/user/${user.username}`)}>View Profile</button>
-          {user.requestSent === "NONE" && <button onClick={() => onAddFriend(user.username)}>Add Friend</button>}
-          {user.requestSent === "PENDING" && <button disabled>Pending</button>}
-          {user.requestSent === "ACCEPTED" && <button disabled>Friends</button>}
-          {user.requestSent === "BLOCKED" && <button onClick={() => unblockUser(user.id)}>Unblock</button>}
-      </div>
-      ))}
-  </div>
 
-      {/* UPLOAD POSTS */}
+        <div style={{ padding: '20px' }}>
+
+      </div>
       <div>
-        <label>
-          Caption:
-          <input type="text" value={caption} onChange={(e) => setCaption(e.target.value)} />
-        </label>
-        <label>
-          Post Text:
-          <textarea value={postText} onChange={(e) => setPostText(e.target.value)} />
-        </label>
-        <label>
-          Image:
-          <input type="file" name="image" accept="image/*" onChange={handleFileChange} />
-        </label>
-        <label>
-          Video:
-          <input type="file" name="video" accept="video/*" onChange={handleFileChange} />
-        </label>
-        <button onClick={onUpload}>Upload</button>
+      <div style={{ maxWidth: '500px', margin: 'auto' }}>
+
+
+  {/* ACCEPT/REJECT REQUESTS */}
+    {/* <div>
+      <h3>Friend Requests</h3>
+      {friendRequests.map((request) => (
+          <div key={request.id}>
+              <p>{request.username} wants to be friends.</p>
+              <button onClick={() => acceptRequest(request.id)}>Accept</button>
+              <button onClick={() => rejectRequest(request.id)}>Reject</button>
+          </div>
+      ))}
+  </div> */}
+
+
+
+    {posts.map((post, index) => (
+      <div key={index} style={{
+        border: '1px solid #ccc',
+        borderRadius: '10px',
+        padding: '10px',
+        marginBottom: '20px',
+        backgroundColor: '#fff',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      }}>
+        <p style={{ margin: '0 0 10px 0' }}>{post.post}</p>
+        {post.imageUrl && (
+          <img src={post.imageUrl} alt="Post" style={{ maxWidth: '100%', height: 'auto', display: 'block', marginBottom: '10px' }} />
+        )}
+        {post.videoUrl && (
+          <video controls style={{ maxWidth: '100%', height: 'auto', display: 'block', marginBottom: '10px' }}>
+            <source src={post.videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+        {post.createdAt && (
+          <div style={{ color: '#777', fontSize: '0.8rem', marginTop: '10px' }}>
+            Posted on: {new Date(post.createdAt).toLocaleString()}
+          </div>
+        )}
+        <button onClick={() => onLikePost(post.postId)}>Like</button>
+        <button onClick={() => onUnlikePost(post.postId)}>Unlike</button>
+        <button onClick={() => onDeletePost(post.postId)}>Delete</button>
+
       </div>
-    </div>
-    <div>
-    <div style={{ maxWidth: '500px', margin: 'auto' }}>
-
-
-{/* ACCEPT/REJECT REQUESTS */}
-  <div>
-    <h3>Friend Requests</h3>
-    {friendRequests.map((request) => (
-        <div key={request.id}>
-            <p>{request.username} wants to be friends.</p>
-            <button onClick={() => acceptRequest(request.id)}>Accept</button>
-            <button onClick={() => rejectRequest(request.id)}>Reject</button>
-        </div>
     ))}
-</div>
-
-
-
-  {posts.map((post, index) => (
-    <div key={index} style={{
-      border: '1px solid #ccc',
-      borderRadius: '10px',
-      padding: '10px',
-      marginBottom: '20px',
-      backgroundColor: '#fff',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-    }}>
-      <h3 style={{ margin: '0 0 10px 0' }}>{post.caption}</h3>
-      <p style={{ margin: '0 0 10px 0' }}>{post.post}</p>
-      {post.imageUrl && (
-        <img src={post.imageUrl} alt="Post" style={{ maxWidth: '100%', height: 'auto', display: 'block', marginBottom: '10px' }} />
-      )}
-      {post.videoUrl && (
-        <video controls style={{ maxWidth: '100%', height: 'auto', display: 'block', marginBottom: '10px' }}>
-          <source src={post.videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      )}
-      {post.createdAt && (
-        <div style={{ color: '#777', fontSize: '0.8rem', marginTop: '10px' }}>
-          Posted on: {new Date(post.createdAt).toLocaleString()}
-        </div>
-      )}
-      <button onClick={() => onLikePost(post.postId)}>Like</button>
-      <button onClick={() => onUnlikePost(post.postId)}>Unlike</button>
-      <button onClick={() => onDeletePost(post.postId)}>Delete</button>
-
-    </div>
-  ))}
-</div>
-</div>
-</div>
+  </div>
+  </div>
+  </div>
 );
 };
 

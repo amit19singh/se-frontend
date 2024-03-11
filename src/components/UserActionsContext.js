@@ -12,6 +12,7 @@ export const UserActionsProvider = ({ children }) => {
 
   // UPLOAD POSTS
   const handleUpload = useCallback(async (formData) => {
+    console.log("INSIDE USERACTIONSCONTEXT: (token) ", token);
     if (!token) {
       console.error("Can't upload without a token");
       return;
