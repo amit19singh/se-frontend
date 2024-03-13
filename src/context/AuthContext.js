@@ -13,8 +13,6 @@ export const AuthProvider = ({ children }) => {
     token: localStorage.getItem('token') || null,
   });
 
-
-
   const fetchUserDetails = useCallback(async (token) => {
     try {
       const userDetailResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/userDetail`, {
@@ -50,7 +48,6 @@ export const AuthProvider = ({ children }) => {
           user: null, 
         });
 
-        // Fetch and set user details
         await fetchUserDetails(response.data.accessToken);
         
         return response.data;
