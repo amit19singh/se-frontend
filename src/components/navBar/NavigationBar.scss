@@ -8,11 +8,11 @@
     padding: 10px 20px;
     height: 50px;
     border-bottom: 1px solid rgb(211, 211, 211);//themed("border");
-    // position: sticky;
-    // top: 0;
+    position: sticky;
+    top: 0;
     background-color: rgb(86, 131, 215);//themed("bg");
     // color:themed("textColor");
-    // z-index: 999;
+    z-index: 999;
 
     .left {
       display: flex;
@@ -61,6 +61,40 @@
       // @include mobile{
       //   display: none;
       // }
+      .friend-requests {
+        position: relative;
+        display: inline-block; // Or flex, depending on your layout
+    
+        .dropdown-menu {
+          display: none; // Initially hidden
+          position: absolute;
+          z-index: 1000;
+          top: 100%; // Directly below the button
+          right: 0;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          min-width: 160px;
+          box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    
+          div {
+            padding: 8px 12px;
+            cursor: pointer;
+    
+            &:hover {
+              background-color: #f5f5f5;
+            }
+    
+            button {
+              margin-right: 10px; // Space between buttons
+            }
+          }
+        }
+        
+        &:hover .dropdown-menu {
+          display: block; // Show dropdown on hover
+        }
+      }
 
       .user {
         position: relative;
@@ -136,82 +170,5 @@
         }
       }
     }
-    
-    // .right {
-    //   display: flex;
-    //   align-items: center;
-    //   gap: 20px;
-    
-    //   @include mobile{
-    //     display: none;
-    //   }
-    
-    //   .user {
-    //     position: relative;
-    //     display: flex;
-    //     align-items: center;
-    //     gap: 10px;
-    //     font-weight: 500;
-    //     cursor: pointer;
-    
-    //     img {
-    //       width: 30px;
-    //       height: 30px;
-    //       border-radius: 50%;
-    //       object-fit: cover;
-    //     }
-    
-    //     .dropdown {
-    //       position: absolute;
-    //       top: 100%;
-    //       right: 0;
-    //       background-color: #fff;
-    //       border: 1px solid #ccc;
-    //       border-radius: 4px;
-    //       min-width: 160px;
-    //       z-index: 1000;
-    //       display: none;
-    
-    //       ul {
-    //         list-style: none;
-    //         padding: 0;
-    //         margin: 0;
-    
-    //         li {
-    //           padding: 8px 12px;
-    //           cursor: pointer;
-    
-    //           &:hover {
-    //             background-color: #f5f5f5;
-    //           }
-    
-    //           // This targets the Settings list item specifically
-    //           &.settings:hover + .submenu {
-    //             display: block; // Show submenu on hover
-    //           }
-    //         }
-    //       }
-          
-    //       // Adjusted submenu positioning for vertical dropdown
-    //       .submenu {
-    //         display: none; // Initially hidden
-    //         position: static; // Use static for natural flow, or relative for positioning context
-    //         width: 100%; // Match width of the parent dropdown item
-    
-    //         ul {
-    //           padding-left: 20px; // Indent submenu items for clarity
-    //         }
-    //       }
-    //     }
-    
-    //     &:hover .dropdown {
-    //       display: block; // Display dropdown on hover
-    //     }
-    //   }
-    // }
-
-    
   }
-// }
-
 

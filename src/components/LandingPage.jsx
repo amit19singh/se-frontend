@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from './context/AuthContext'; 
-import styles from './CSS/LandingPage.module.css'; 
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; 
+import "./LandingPage.scss";
 
 
 const LandingPage = () => {
@@ -38,41 +38,47 @@ const LandingPage = () => {
 
 
 return (
-    <div className={styles.container}>
+  <div className="login">
+    <div className="card">
+      <div className="left">
       <h1>Welcome to Anti-Facebook</h1>
       <p>This is a great place to start your journey with us.</p>
-      
-      <h2 className={styles.title}>Login with Google</h2>
-      <a href="http://localhost:8080/oauth2/authorization/google" className={styles.oauthLink}>Login with Google</a>
-      <h2 className={styles.title}>Login</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          name="usernameOrEmail"
-          type="text"
-          value={credentials.usernameOrEmail}
-          onChange={handleChange}
-          placeholder="Username or Email"
-          className={styles.input}
-        />
-        <input
-          name="password"
-          type="password"
-          value={credentials.password}
-          onChange={handleChange}
-          placeholder="Password"
-          className={styles.input}
-        />
-        <button type="submit" className={styles.button}>Login</button>
+        <span>Don't have an account?</span>
+        <Link to="/register">
+          <button>Register</button>
+        </Link>
+      </div>
+      <div className="right">
+        <a href="http://localhost:8080/oauth2/authorization/google">Login with Google</a>
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            name="usernameOrEmail"
+            type="text"
+            value={credentials.usernameOrEmail}
+            onChange={handleChange}
+            placeholder="Username or Email"
+          />
+          <input
+            name="password"
+            type="password"
+            value={credentials.password}
+            onChange={handleChange}
+            placeholder="Password"
+          />
+          <button type="submit">Login</button>
+      <Link to='/UsernameSubmissionComponent'>
+        <h6>Forgot Password?</h6>
+      </Link>
       </form>
-      <p onClick={() => navigate('/UsernameSubmissionComponent')} className={styles.link}>Forgot Password?</p>
-      <br></br>
-      <p onClick={() => navigate('/register')} className={styles.link}>Register</p>
+      </div>
     </div>
-  );
+  </div>
+);
 };
 
-export default LandingPage;
 
+export default LandingPage;
 
 
 

@@ -18,7 +18,7 @@ import SearchResultsPage from './components/searchResults/searchResults';
 import { useDarkMode } from './context/DarkModeContext';
 
 import "./style.scss";
-import Navbar from './components/navBar/NavBar.jsx';
+import Navbar from './components/navBar/NavigationBar.jsx';
 import LeftBar from './components/leftBar/LeftBar';
 import RightBar from './components/rightBar/RightBar';
 

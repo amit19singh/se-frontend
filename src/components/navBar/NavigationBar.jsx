@@ -1,4 +1,4 @@
-import "./navbar.scss";
+import "./NavigationBar.scss";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
@@ -15,10 +15,10 @@ import { useDarkMode } from '../../context/DarkModeContext';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const NavBar = () => {
   
   const { user, logout, fetchUserDetails } = useAuth();
-  const { handleSearch } = useUserActions();
+  const { handleSearch, handleAcceptRequest, handleRejectRequest } = useUserActions();
   const { toggle, darkMode } = useDarkMode();
 
   const navigate = useNavigate();
@@ -95,6 +95,32 @@ const Navbar = () => {
   const handleNavigateHome = () => {
     navigate('/home');
   };
+
+  const handleCheckRequests = () => {
+    navigate('/friend-requests');
+  }
+
+  // ACCEPT FRIENDS REQUEST
+  const acceptRequest = async (requestId) => {
+    const success = await handleAcceptRequest(requestId);
+    if (success) {
+      alert('Friend request accepted!');
+    } else {
+      alert('Failed to accept friend request.');
+    }
+  };
+
+  // REJECT FRIENDS REQUEST
+  const rejectRequest = async (requestId) => {
+    const success = await handleRejectRequest(requestId);
+    if (success) {
+      alert('Friend request rejected');
+      setFriendRequestsPending(currentRequests => currentRequests.filter(request => request.id !== requestId));
+    } else {
+      alert('Failed to reject friend request');
+    }
+  };
+
   
 
   return (
@@ -122,29 +148,35 @@ const Navbar = () => {
             onFocus={() => setShowDropdown(true)}
             onBlur={() => setShowDropdown(false)}
             onKeyDown={handleKeyDown}/>
-
-         <div>
-
-         {searchResults.length > 0 && showDropdown && (
-          <div className="dropdown">
-            {searchResults.map((user, index) => (
-              <div key={index} className="dropdown-item">
-                <p>{user.firstname} {user.lastname} (@{user.username})</p>
-                <button onClick={() => navigate(`/user/${user.username}`)}>View Profile</button>
-                {user.requestSent === "PENDING" && <button disabled>Pending</button>}
-                {user.requestSent === "ACCEPTED" && <button disabled>Friends</button>}
-              </div>
-            ))}
-          </div>
-        )}
-        </div>
-        
-
         </div>
 
       </div>
       <div className="right">
-        <PersonOutlinedIcon />
+
+      <div className="friend-requests">
+        <button onClick={toggleDropdown}>
+          <PersonOutlinedIcon />
+        </button>
+          {dropdownVisible && (
+            <div className="dropdown-menu">
+              {friendRequests.length > 0 ? (
+                friendRequests.map((request) => (
+                  <div key={request.id}>
+                    <p><strong onClick={() => navigate(`/user/${request.username}`)}>{request.username}</strong> wants to be friends.</p>
+                    <button className="accept" onClick={() => acceptRequest(request.id)}>Accept</button>
+                    <button className="reject" onClick={() => rejectRequest(request.id)}>Reject</button>
+                  </div>
+                ))
+              ) : (
+                <p className="no-requests">No new requests</p>
+              )}
+            </div>
+          )}
+      </div>
+
+
+
+
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <div className="user">
@@ -166,7 +198,10 @@ const Navbar = () => {
                     <ul className="submenu">
                       <li onClick={() => navigate('/edit-profile')}>Edit Profile</li>
                       <li onClick={() => navigate('/2FA', { state: { username: userName , 
-                                                isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Auth</li>
+                                                isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</li>
+                      <li onClick={() => navigate('/blocked-users')}>Blocked Users</li>
+                      {/* <li onClick={() => navigate('/blocked-users')}>Make Profile Private</li> */}
+                      {/* <li onClick={() => navigate('/blocked-users')}>Delete Account</li> */}
                     </ul>
                   )}
                 </li>
@@ -185,4 +220,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;

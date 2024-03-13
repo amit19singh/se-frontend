@@ -3,6 +3,8 @@ import { useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { registerSuccess, registerFailure } from '../actions/authActions'; 
 import axios from 'axios';
+import { Link } from "react-router-dom";
+import "./RegisterPage.scss";
 import styles from './CSS/RegisterPage.module.css';
 
 const RegisterPage = () => {
@@ -114,113 +116,115 @@ const RegisterPage = () => {
     }
   };
   
-  return (
-    <div className={styles.container}>
-      <h2>Register</h2>
-      {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
-      {!isPasswordComplex && <p className={styles.errorMessage}>{passwordError}</p>}
-      {!doPasswordsMatch && <p className={styles.errorMessage}>Passwords do not match.</p>}
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          name="firstname"
-          type="text"
-          value={user.firstname}
-          onChange={handleChange}
-          placeholder="First Name"
-          className={styles.input}
-        />
-        <input
-          name="lastname"
-          type="text"
-          value={user.lastname}
-          onChange={handleChange}
-          placeholder="Last Name"
-          className={styles.input}
-        />
-        <input
-          name="email"
-          type="email"
-          value={user.email}
-          onChange={handleChange}
-          placeholder="Email"
-          className={styles.input}
-        />
-        <input
-          name="password"
-          type="password"
-          value={user.password}
-          onChange={handleChange}
-          placeholder="Password"
-          className={styles.input}
-        />
-        <input
-          name="confirmPassword"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm Password"
-          className={styles.input}
-        />
-        <input
-          name="birthday"
-          type="date"
-          value={user.birthday}
-          onChange={handleChange}
-          className={styles.input}
-        />
-        <select
-          name="gender"
-          value={user.gender}
-          onChange={handleChange}
-          className={styles.select}
-        >
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
-        <select
-          name="securityQuestion1"
-          value={user.securityQuestion1}
-          onChange={handleChange}
-          className={styles.select}
-        >
-          <option value="What is your favorite color?">What is your favorite color?</option>
-          <option value="What is the name of your first pet?">What is the name of your first pet?</option>
-          <option value="What is your favorite video game?">What is your favorite video game?</option>
-          <option value="Where were you born?">Where were you born?</option>
-        </select>
-        <input
-          name="securityAnswer1"
-          type="text"
-          value={user.securityAnswer1}
-          onChange={handleChange}
-          placeholder="Security Answer 1"
-          className={styles.input}
-        />
-        <select
-          name="securityQuestion2"
-          value={user.securityQuestion2}
-          onChange={handleChange}
-          className={styles.select}
-        >
-          <option value="What is your favorite color?">What is your favorite color?</option>
-          <option value="What is the name of your first pet?">What is the name of your first pet?</option>
-          <option value="What is your favorite video game?">What is your favorite video game?</option>
-          <option value="Where were you born?">Where were you born?</option>
-        </select>
-        <input
-          name="securityAnswer2"
-          type="text"
-          value={user.securityAnswer2}
-          onChange={handleChange}
-          placeholder="Security Answer 2"
-          className={styles.input}
-        />
-        <button type="submit" className={styles.button}>Register</button>
-      </form>
+
+return (
+  <div className="register">
+    <div className="card">
+      <div className="right">
+        <h1>Anti Facebook</h1>
+        <span>Do you have an account?</span>
+        <Link to="/">
+          <button>Login</button>
+        </Link>
+      </div>
+
+      <div className="left">
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        {!isPasswordComplex && <p className={styles.errorMessage}>{passwordError}</p>}
+        {!doPasswordsMatch && <p className={styles.errorMessage}>Passwords do not match.</p>}
+        <form onSubmit={handleSubmit}>
+          <input
+            name="firstname"
+            type="text"
+            value={user.firstname}
+            onChange={handleChange}
+            placeholder="First Name"
+          />
+          <input
+            name="lastname"
+            type="text"
+            value={user.lastname}
+            placeholder="Last Name"
+          />
+          <input
+            name="email"
+            type="email"
+            value={user.email}
+            onChange={handleChange}
+            placeholder="Email"
+          />
+          <input
+            name="password"
+            type="password"
+            value={user.password}
+            onChange={handleChange}
+            placeholder="Password"
+          />
+          <input
+            name="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
+          />
+          <input
+            name="birthday"
+            type="date"
+            value={user.birthday}
+            onChange={handleChange}
+          />
+          <select
+            name="gender"
+            value={user.gender}
+            onChange={handleChange}
+          >
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          <select
+            name="securityQuestion1"
+            value={user.securityQuestion1}
+            onChange={handleChange}
+          >
+            <option value="What is your favorite color?">What is your favorite color?</option>
+            <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+            <option value="What is your favorite video game?">What is your favorite video game?</option>
+            <option value="Where were you born?">Where were you born?</option>
+          </select>
+          <input
+            name="securityAnswer1"
+            type="text"
+            value={user.securityAnswer1}
+            onChange={handleChange}
+            placeholder="Security Answer 1"
+          />
+          <select
+            name="securityQuestion2"
+            value={user.securityQuestion2}
+            onChange={handleChange}
+          >
+            <option value="What is your favorite color?">What is your favorite color?</option>
+            <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+            <option value="What is your favorite video game?">What is your favorite video game?</option>
+            <option value="Where were you born?">Where were you born?</option>
+          </select>
+          <input
+            name="securityAnswer2"
+            type="text"
+            value={user.securityAnswer2}
+            onChange={handleChange}
+            placeholder="Security Answer 2"
+          />
+          <button type="submit">Register</button>
+        </form>
+      </div>
     </div>
-  );
+  </div>
+);
 };
+
+
 
 export default RegisterPage;
