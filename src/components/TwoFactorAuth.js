@@ -1,3 +1,4 @@
+import { Style } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -63,18 +64,43 @@ const TwoFactorAuth = () => {
     navigate('/verify2FA', { state: { username: userName } });
   };
 
+  const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: '20px',
+    },
+    button: {
+      marginTop: '10px',
+      padding: '10px 20px',
+      borderRadius: '5px',
+      border: '1px solid #ccc',
+      cursor: 'pointer',
+      backgroundColor: '#f0f0f0',
+      fontWeight: 'bold',
+    },
+    image: {
+      marginTop: '20px',
+    },
+    title: {
+      color: '#333',
+    }
+  };
+
 
   return (
-    <div>
+    <div style={styles.container}>
       <h2>Setup Two-Factor Authentication</h2>
       {!isQRCodeGenerated ? (
         <button onClick={handleEnable2FA}>Generate QR Code</button>
       ) : (
-        <div>
-          <p>Scan this QR code with your 2FA app:</p>
-          <img src={qrCodeUrl} alt="QR Code" />
-          <button onClick={proceedToVerifyOTP}>I've Scanned the QR Code</button>
-        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <p style={{ margin: '10px 0' }}>Scan this QR code with your 2FA app:</p>
+  <img src={qrCodeUrl} alt="QR Code" style={{ maxWidth: '100%', margin: '10px 0' }} />
+  <button onClick={proceedToVerifyOTP} style={{ margin: '10px 0' }}>I've Scanned the QR Code</button>
+</div>
+
       )}
       {is2FAEnabled && (
         <button onClick={disable2FA}>Disable 2FA</button>

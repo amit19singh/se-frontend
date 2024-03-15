@@ -6,13 +6,15 @@
   justify-content: center;
 
   .card {
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-direction: row-reverse;
     background-color: white;
-    border-radius: 10px;
-    min-height: 600px;
+    border-radius: 50px;
+    min-height: 400px;
     overflow: hidden;
+    max-width: 800px; /* Maximum width for larger screens */
+    min-width: 300px;
 
     .right {
       flex: 1;
@@ -46,26 +48,33 @@
         color: rebeccapurple;
         font-weight: bold;
         cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s; // Add transition for smooth hover effect
+
+          &:hover {
+            background-color: #9c98e8; // Change the background color on hover
+            color: whitesmoke;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Add a box-shadow on hover
+          }
+        
       }
     }
 
     .left {
       flex: 1;
       padding: 25px;
+      margin: 50px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-
       
       form {
         display: flex;
         flex-direction: column;
-        gap: 5px;
         
         input {
         border: none;
         border-bottom: 1px solid lightgray;
-        padding: 20px 10px;
+        padding: 15px 20px;
         }
         
         button {
@@ -76,6 +85,13 @@
           color: white;
           font-weight: bold;
           cursor: pointer;
+          transition: background-color 0.3s, box-shadow 0.3s; // Add transition for smooth hover effect
+
+        &:hover {
+          background-color: #7b76d1;
+          color: whitesmoke;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
         }
       }
     }

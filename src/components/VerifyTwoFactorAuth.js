@@ -37,9 +37,32 @@ const VerifyTwoFactorAuth = () => {
     }
   };
   
+  const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: '20px',
+    },
+    button: {
+      marginTop: '10px',
+      padding: '10px 20px',
+      borderRadius: '5px',
+      border: '1px solid #ccc',
+      cursor: 'pointer',
+      backgroundColor: '#f0f0f0',
+      fontWeight: 'bold',
+    },
+    image: {
+      marginTop: '20px',
+    },
+    title: {
+      color: '#333',
+    }
+  };
 
   return (
-    <div>
+    <div style={styles.container}>
       <h2>Verify Two-Factor Authentication</h2>
       <input
         type="text"

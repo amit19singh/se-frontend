@@ -7,8 +7,8 @@
     top: 70px;
     height: calc(100vh - 70px);
     overflow: scroll;
-    background-color: rgb(195, 201, 222) ;//themed("bg");
-    color: black;//themed("textColor");
+    background-color: rgb(102, 111, 142) ;//themed("bg");
+    color: rgb(255, 255, 255);//themed("textColor");
 
     @include mobile{
       display: none;

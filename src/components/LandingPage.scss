@@ -6,12 +6,14 @@
   justify-content: center;
 
   .card {
-    width: 50%;
+    width: 100%;
     display: flex;
     background-color: white;
-    border-radius: 10px;
-    min-height: 600px;
+    border-radius: 50px;
+    min-height: 400px;
     overflow: hidden;
+    max-width: 800px; /* Maximum width for larger screens */
+    min-width: 300px;
 
     .left {
       flex: 1;
@@ -19,7 +21,7 @@
         url("https://images.pexels.com/photos/774731/pexels-photo-774731.jpeg")
           center;
       background-size: cover;
-      padding: 50px;
+      padding: 30px;
       display: flex;
       flex-direction: column;
       gap: 30px;
@@ -29,15 +31,18 @@
         font-size: 80px;
         line-height: 80px;
       }
-      
+
       p {
+        font-family: "Courier New", Courier, monospace;
       }
 
       span {
         font-size: 14px;
       }
-      
+
       button {
+        position: relative;
+        bottom: 20px;
         width: 50%;
         padding: 10px;
         border: none;
@@ -45,15 +50,22 @@
         color: rebeccapurple;
         font-weight: bold;
         cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s; // Add transition for smooth hover effect
+
+        &:hover {
+          background-color: #7b76d1;
+          color: whitesmoke;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
       }
     }
 
     .right {
       flex: 1;
-      padding: 50px;
+      padding: 10px 50px;
       display: flex;
       flex-direction: column;
-      gap: 50px;
+      gap: 10px;
       justify-content: center;
 
       h2 {
@@ -61,22 +73,17 @@
         line-height: 100px;
       }
 
-      h2 {
-        font-size: 100px;
-        line-height: 100px;
-      }
-      
       form {
         display: flex;
         flex-direction: column;
-        gap: 30px;
-        
+        gap: 10px;
+
         input {
-        border: none;
-        border-bottom: 1px solid lightgray;
-        padding: 20px 10px;
+          border: none;
+          border-bottom: 1px solid lightgray;
+          padding: 20px 10px;
         }
-        
+
         button {
           width: 50%;
           padding: 10px;
@@ -85,8 +92,42 @@
           color: white;
           font-weight: bold;
           cursor: pointer;
+          transition: background-color 0.3s, box-shadow 0.3s; // Add transition for smooth hover effect
+
+          &:hover {
+            background-color: #9c98e8; // Change the background color on hover
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Add a box-shadow on hover
+          }
         }
       }
     }
+
+    #google-login {
+      position: relative;
+      display: inline-block;
+      background: #4285F4;
+      color: white;
+      border-radius: 2px;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-family: 'Roboto', sans-serif; /* Roboto is the font recommended by Google */
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background-color: #5d91e3;
+      }
+      
+      
+      
+      
+    }
+    
   }
+
+
 }

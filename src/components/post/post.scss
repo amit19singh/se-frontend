@@ -1,73 +1,80 @@
-@import "../../style.scss";
-
-.post {
-  @include themify($themes) {
-    -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    border-radius: 20px;
-    background-color: themed("bg");
-    color: themed("textColor");
-
-    .container {
-      padding: 20px;
-
-      .user {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .userInfo {
-          display: flex;
-          gap: 20px;
-
-          img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-          }
-
-          .details {
-            display: flex;
-            flex-direction: column;
-
-            .name {
-              font-weight: 500;
-            }
-
-            .date {
-              font-size: 12px;
-            }
-          }
-        }
-      }
-
-      .content {
-        margin: 20px 0px;
-
-        img {
-          width: 100%;
-          max-height: 500px;
-          object-fit: cover;
-          margin-top: 20px;
-        }
-      }
-
-      .info {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-
-        .item {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          cursor: pointer;
-          font-size: 14px;
-        }
-      }
-    }
-  }
+body{
+  background-color: rgb(61, 146, 236); //if you see this color, the margin is not proper
+  margin: 0;
 }
 
+
+/* post.scss */
+.post {
+  font-family: 'Arial', sans-serif;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+
+  .container {
+    padding: 20px;
+
+    .user {
+      display: flex;
+      margin-bottom: 20px;
+
+      .userInfo {
+        display: flex;
+        align-items: center;
+
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+      }
+
+      .details {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .content {
+      img, video {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+      }
+    }
+
+    .info {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      align-items: center;
+      text-align: center;
+      font-size: 10px;
+    
+      // Increase specificity
+      .item {
+        .MuiSvgIcon-root.custom-icon-size {
+          font-size: 30px; // Adjust size as needed
+          color: #606060; // Change for unselected icons
+          transition: transform 0.3s ease, color 0.3s ease;
+    
+          &:hover {
+            color: #ED4956; // Instagram-like color for interactions
+            transform: scale(1.1); // Slightly enlarge icon on hover
+          }
+        }
+    
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+    
+    
+  }
+}

@@ -6,6 +6,7 @@ import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import './post.scss'
 
 const Post = ({ post, onLikePost, onUnlikePost, onDeletePost }) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -52,19 +53,19 @@ const Post = ({ post, onLikePost, onUnlikePost, onDeletePost }) => {
         
         <div className="info">
           <div className="item" onClick={toggleLike} >
-            {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
+            {liked ? <FavoriteOutlinedIcon className="custom-icon-size" /> : <FavoriteBorderOutlinedIcon className="custom-icon-size" />}
             12 Likes {/* Placeholder for like count */}
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
-            <TextsmsOutlinedIcon />
+            <TextsmsOutlinedIcon className="custom-icon-size" />
             12 Comments {/* Placeholder for comment count */}
           </div>
           <div className="item">
-            <ShareOutlinedIcon />
+            <ShareOutlinedIcon className="custom-icon-size" />
             Share
           </div>
           <div className="item" onClick={() => onDeletePost(post.postId)}>
-            <DeleteOutlineIcon />
+            <DeleteOutlineIcon className="custom-icon-size"/>
             Delete
           </div>
         </div>

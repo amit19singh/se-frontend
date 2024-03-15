@@ -49,7 +49,7 @@ return (
         </Link>
       </div>
       <div className="right">
-        <a href="http://localhost:8080/oauth2/authorization/google">Login with Google</a>
+      
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <input
@@ -67,6 +67,10 @@ return (
             placeholder="Password"
           />
           <button type="submit">Login</button>
+          <div className="google-login">
+          <button id="google-login" type='button' onClick={() => window.location.href='http://localhost:8080/oauth2/authorization/google'}>Login with Google</button>
+          </div>
+
       <Link to='/UsernameSubmissionComponent'>
         <h6>Forgot Password?</h6>
       </Link>

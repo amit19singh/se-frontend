@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import "./RegisterPage.scss";
 import styles from './CSS/RegisterPage.module.css';
+import { Padding } from '@mui/icons-material';
 
 const RegisterPage = () => {
   const [user, setUser] = useState({
@@ -144,6 +145,7 @@ return (
             name="lastname"
             type="text"
             value={user.lastname}
+            onChange={handleChange}
             placeholder="Last Name"
           />
           <input
