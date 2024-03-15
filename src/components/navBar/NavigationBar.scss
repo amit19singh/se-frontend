@@ -115,7 +115,26 @@
 
     .friend-requests {
       position: relative;
-      display: inline-block; // Or flex, depending on your layout
+      display: inline-block;
+
+      button {
+        background: none; // Make the button background transparent
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    
+        &:focus {
+          outline: none; // Remove outline on focus for a cleaner look, but ensure accessibility in other ways
+        }
+    
+        svg {
+          // Optionally, adjust the icon size, color, etc., if needed
+          fill: #222529; // Change the icon color to match the button styles
+          width: 36px; // Adjust size as necessary
+          height: 30px;
+        }
+      }
+      
 
       .dropdown-menu {
         display: none; // Initially hidden
@@ -123,8 +142,8 @@
         z-index: 1000;
         top: 100%; // Directly below the button
         right: 0;
-        background-color: #fff;
-        border: 1px solid #ccc;
+        background-color: whitesmoke;
+        border: 5px solid #ccc;
         border-radius: 4px;
         min-width: 160px;
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -138,9 +157,20 @@
           }
 
           button {
-            margin-right: 10px; // Space between buttons
+            margin-right: 10px; 
+            background-color: #4C9AFF; // Updated button color
+            color: white; // Text color for the button
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: #1A78C2;
+              }
+            }
           }
-        }
       }
 
       &:hover .dropdown-menu {
