@@ -1,174 +1,215 @@
 @import "../../style.scss";
 
 .navbar {
-  // @include themify($themes) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  height: 50px;
+  border-bottom: 1px solid rgb(211, 211, 211); //themed("border");
+  position: sticky;
+  top: 0;
+  background-color: rgb(149, 181, 240); //themed("bg");
+  z-index: 999;
+
+  .left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    height: 50px;
-    border-bottom: 1px solid rgb(211, 211, 211);//themed("border");
-    position: sticky;
-    top: 0;
-    background-color: rgb(149, 181, 240);//themed("bg");
-    // color:themed("textColor");
-    z-index: 999;
+    gap: 30px;
 
-    .left {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-
-      span {
-        font-weight: bold;
-        font-size: 20px;
-        color: rgb(1, 8, 27); // themed("logo");
-      }
-
-      .search {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        border: 1px solid lightgrey;//themed("border");
-        border-radius: 5px;
-        padding: 5px;
-
-        input {
-          border: none;
-          width: 500px;
-          background-color: transparent;
-          padding: 10px 15px; /* Increased padding */
-          font-size: 16px; /* Adjust font size as needed */
-          outline: none;
-          // color: themed("textColor");
-
-          @include mobile{
-            display: none;
-          }
-
-          @include tablet{
-            width: 200px;
-          }
-        }
-      }
+    span {
+      font-weight: bold;
+      font-size: 20px;
+      color: rgb(1, 8, 27); // themed("logo");
     }
 
-    .right {
+    .search {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 10px;
+      border: 1px solid lightgrey; //themed("border");
+      border-radius: 5px;
+      padding: 5px;
+      position: relative;
 
-      // @include mobile{
-      //   display: none;
-      // }
-      .friend-requests {
-        position: relative;
-        display: inline-block; // Or flex, depending on your layout
-    
-        .dropdown-menu {
-          display: none; // Initially hidden
-          position: absolute;
-          z-index: 1000;
-          top: 100%; // Directly below the button
-          right: 0;
-          background-color: #fff;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          min-width: 160px;
-          box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    
-          div {
-            padding: 8px 12px;
-            cursor: pointer;
-    
-            &:hover {
-              background-color: #f5f5f5;
-            }
-    
-            button {
-              margin-right: 10px; // Space between buttons
-            }
-          }
+      input {
+        border: none;
+        width: 500px;
+        background-color: transparent;
+        padding: 10px 15px; /* Increased padding */
+        font-size: 16px; /* Adjust font size as needed */
+        outline: none;
+        // color: themed("textColor");
+
+        @include mobile {
+          display: none;
         }
-        
-        &:hover .dropdown-menu {
-          display: block; // Show dropdown on hover
+
+        @include tablet {
+          width: 200px;
         }
       }
 
-      .user {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 500;
+      button {
+        background-color: #4C9AFF; // Updated button color
+        color: white; // Text color for the button
+        padding: 5px 10px;
+        border-radius: 4px;
+        border: none;
         cursor: pointer;
+        transition: background-color 0.3s ease;
 
-
-        // @include tablet{
-        //   display: none;
-        // }
-
-        img {
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .dropdown {
-          position: absolute;
-          top: 100%;
-          right: 0;
-          background-color: #fff;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          width: auto;
-          min-width: 160px; // Ensures the dropdown has a minimum width
-          z-index: 1000;
-          display: none; // Initially hidden
-    
-          ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-    
-            li {
-              padding: 8px 12px;
-              cursor: pointer;
-    
-              &:hover {
-                background-color: #f5f5f5;
-              }
-    
-              // Targeting the Settings list item for the submenu
-              &:nth-child(2):hover .submenu {
-                display: block; // Show submenu on hover
-              }
-            }
-          }
-    
-          .submenu {
-            display: none; /* Initially hidden */
-            position: absolute;
-            right: 100%; /* Position it to the left of the parent element */
-            top: 0;
-            border-right: 1px solid #ccc; /* Adjust the border to the right side */
-            background-color: #fff;
-            border-radius: 4px 0 0 4px; /* Adjust rounded corners for the left side */
-            width: 200px; /* Adjust width as needed to make it broader */
-          }
-          
-        }
-    
-        &:hover .dropdown {
-          display: block; // Display dropdown on hover of .user
-        }
-    
-
-        span {
+        &:hover {
+          background-color: #1A78C2; // Darker shade on hover
         }
       }
+
+      .filter-dropdown {
+        display: none; // Initially hidden, shown when the Filters button is clicked
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #F3F4F6; // Lighter background color for the dropdown
+        border: 5px solid #ccc;
+        border-radius: 4px;
+        padding: 15px; // Increased padding for better spacing
+        width: 80%; // Adjusted width
+        z-index: 100;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+        div {
+          display: block; // Changed from flex to block for vertical layout
+          margin-bottom: 15px; // Increased spacing between filter options
+
+          label {
+            display: block; // Ensure label takes up full width for better clickability
+            margin-bottom: 10px; // Increased bottom margin for labels
+            color: #333; // Label text color
+            font-size: 14px; // Adjusted font size for clarity
+          }
+
+          input[type="text"], input[type="checkbox"] {
+            width: 80%; // Ensure input takes full width of dropdown
+            margin-top: 5px; // Maintain top margin for spacing
+            padding: 8px; // Increased padding for better input visibility and interaction
+            border-radius: 4px; // Rounded corners for inputs
+            border: 1px solid #ccc; // Border color for inputs
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); // Subtle inner shadow for depth
+          }
+
+          input[type="checkbox"] {
+            width: auto; // Override for checkboxes to not stretch
+            margin-right: 5px; // Space before checkbox label
+          }
+        }
+      }
+
+      
     }
   }
 
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .friend-requests {
+      position: relative;
+      display: inline-block; // Or flex, depending on your layout
+
+      .dropdown-menu {
+        display: none; // Initially hidden
+        position: absolute;
+        z-index: 1000;
+        top: 100%; // Directly below the button
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        min-width: 160px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+
+        div {
+          padding: 8px 12px;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #f5f5f5;
+          }
+
+          button {
+            margin-right: 10px; // Space between buttons
+          }
+        }
+      }
+
+      &:hover .dropdown-menu {
+        display: block; // Show dropdown on hover
+      }
+    }
+
+    .user {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      cursor: pointer;
+
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: auto;
+        min-width: 160px; // Ensures the dropdown has a minimum width
+        z-index: 1000;
+        display: none; // Initially hidden
+
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          li {
+            padding: 8px 12px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #f5f5f5;
+            }
+
+            // Targeting the Settings list item for the submenu
+            &:nth-child(2):hover .submenu {
+              display: block; // Show submenu on hover
+            }
+          }
+        }
+
+        .submenu {
+          display: none; /* Initially hidden */
+          position: absolute;
+          right: 100%; /* Position it to the left of the parent element */
+          top: 0;
+          border-right: 1px solid #ccc; /* Adjust the border to the right side */
+          background-color: #fff;
+          border-radius: 4px 0 0 4px; /* Adjust rounded corners for the left side */
+          width: 200px; /* Adjust width as needed to make it broader */
+        }
+      }
+
+      &:hover .dropdown {
+        display: block; // Display dropdown on hover of .user
+      }
+    }
+  }
+}

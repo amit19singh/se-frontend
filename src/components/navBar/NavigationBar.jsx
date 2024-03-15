@@ -37,6 +37,19 @@ const NavBar = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [settingsSubmenuVisible, setSettingsSubmenuVisible] = useState(false);
 
+  // Filter dropdown state
+  const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({ location: '', mutualFriends: false, hashtag: '', topic: ''});
+
+  
+
+
+  const handleFilterChange = (filterName, value) => {
+    setSelectedFilters(prevFilters => ({
+      ...prevFilters,
+      [filterName]: value,
+    }));
+  };
   
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -48,6 +61,22 @@ const NavBar = () => {
     e.stopPropagation();
     setSettingsSubmenuVisible(!settingsSubmenuVisible);
   };
+
+  const applyFilters = () => {
+    // Close the filter dropdown
+    setFilterDropdownVisible(false);
+    
+    // Example logic to apply filters
+    // This will depend on how your data is structured and how you're fetching/searching it
+    console.log("Applying filters:", selectedFilters);
+    // Assuming you have a function to fetch or filter your search results
+    // You would pass the selectedFilters object to this function
+    // For demonstration, let's just log the filters to the console
+    // In a real app, you might call a function like this:
+    // fetchSearchResults(searchQuery, selectedFilters);
+  };
+  
+
 
   useEffect(() => {
     const fetchDetailsAndSetState = async () => {
@@ -121,7 +150,10 @@ const NavBar = () => {
     }
   };
 
-  
+  const toggleFilterDropdown = () => {
+    console.log("Filter button clicked!");
+    setFilterDropdownVisible(!filterDropdownVisible);
+  };
 
   return (
     <div className="navbar">
@@ -142,13 +174,48 @@ const NavBar = () => {
         
         
         {/* SEARCH */}
+        {/* SEARCH */}
         <div className="search">
           <SearchOutlinedIcon onClick={onSearch}/>
           <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowDropdown(true)}
             onBlur={() => setShowDropdown(false)}
             onKeyDown={handleKeyDown}/>
+          {/* Filter button */}
+          <button onClick={toggleFilterDropdown}>Filters</button>
+          {/* Filter dropdown */}
+          {/* Filter dropdown */}
+          {filterDropdownVisible && (
+            <div className="filter-dropdown" style={{ display: 'block' }}> {/* Inline style for demonstration */}
+              <div>
+                <label>Location:</label>
+                <input type="text" placeholder="Location" onChange={(e) => handleFilterChange('location', e.target.value)} />
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" onChange={(e) => handleFilterChange('mutualFriends', e.target.checked)} />
+                  Mutual Friends
+                </label>
+              </div>
+              {/* Hashtag filter */}
+              <div>
+                <label>Hashtag:</label>
+                <input type="text" placeholder="#hashtag" onChange={(e) => handleFilterChange('hashtag', e.target.value)} />
+              </div>
+              {/* Topic filter */}
+              <div>
+                <label>Topic:</label>
+                <input type="text" placeholder="Topic" onChange={(e) => handleFilterChange('topic', e.target.value)} />
+              </div>
+              {/* Add more filters as needed */}
+
+              {/* Apply button */}
+              <button onClick={applyFilters}>Apply</button>
+            </div>
+          )}
+
         </div>
+
 
       </div>
       <div className="right">
