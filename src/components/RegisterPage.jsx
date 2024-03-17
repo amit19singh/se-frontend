@@ -144,6 +144,7 @@ return (
             name="lastname"
             type="text"
             value={user.lastname}
+            onChange={handleChange}
             placeholder="Last Name"
           />
           <input
