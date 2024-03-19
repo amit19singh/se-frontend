@@ -33,7 +33,6 @@ const Posts = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
   };
 
   

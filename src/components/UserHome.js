@@ -9,6 +9,8 @@ import Share from './share/Share';
 import Posts from './posts/Posts';
 
 const UserHome = () => {
+  const { user, logout, fetchUserDetails } = useAuth();
+  
   const [userName, setUserName] = useState('');
   const [isTwoFactorEnabled, setisTwoFactorEnabled] = useState('');
   const [posts, setPosts] = useState([]);
@@ -18,12 +20,12 @@ const UserHome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, logout, fetchUserDetails } = useAuth();
 
   // PAGE INIT
   useEffect(() => {
     const fetchDetailsAndSetState = async () => {
       const token = localStorage.getItem('token');
+      console.log("token", token);
       if (!user && token) {
         await fetchUserDetails(token); 
       } else if (!token) {

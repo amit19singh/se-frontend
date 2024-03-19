@@ -11,7 +11,6 @@ const SearchResultsPage = () => {
   const query = useQuery().get('query');
   const [searchResultsUser, setSearchResultsUser] = useState([]);
   const [searchResultsPost, setSearchResultsPost] = useState([]);
-  const [friendRequestsPending, setFriendRequestsPending] = useState([]);
   const [friends, setFriends] = useState([]);
   
   const { handleSearch, handleAddFriend, handleRemoveFriend, 
