@@ -65,6 +65,7 @@ const TwoFactorAuth = () => {
     navigate('/verify2FA', { state: { username: userName } });
   };
 
+
   const styles = {
     title:{
       fontFamily:'"Roboto", sans-serif',
@@ -120,7 +121,6 @@ const TwoFactorAuth = () => {
     }
   };
 
-
   return (
     <div style={styles.container}>
       <h2>Setup Two-Factor Authentication</h2>
@@ -134,6 +134,7 @@ const TwoFactorAuth = () => {
       </button>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+<<<<<<< HEAD
   <p style={{ margin: '10px 0' }}>Scan this QR code with your 2FA app:</p>
   <img src={qrCodeUrl} alt="QR Code" style={{ maxWidth: '100%', margin: '10px 0' }} />
   <button
@@ -152,6 +153,25 @@ const TwoFactorAuth = () => {
     </div>
   );
 };
+=======
+        <p style={{ margin: '10px 0' }}>Scan the QR code with Google Authenticator App</p>
+        <img src={qrCodeUrl} alt="QR Code" style={{ maxWidth: '100%', margin: '10px 0' }} />
+        <button
+        onClick={proceedToVerifyOTP}
+        style={{ ...styles.button, margin: '10px 0' }}
+        className="buttonHoverEffect"
+        >
+        I've Scanned the QR Code
+        </button>
+        </div>
+>>>>>>> db898771d316229965b3eb3a28e0278f2c4f862d
 
+            )}
+            {is2FAEnabled && (
+              <button onClick={disable2FA} className="buttonHoverEffect">Disable 2FA</button>
+            )}
+          </div>
+        );
+        };
 
 export default TwoFactorAuth;

@@ -42,6 +42,11 @@ const VerifyTwoFactorAuth = () => {
     container: {
       display: 'flex',
       flexDirection: 'column',
+<<<<<<< HEAD
+=======
+      alignItems: 'center',
+      marginTop: '20px',
+>>>>>>> db898771d316229965b3eb3a28e0278f2c4f862d
       justifyContent: 'center', // Centers content vertically in the container
       alignItems: 'center', // Centers content horizontally in the container
       position: 'absolute', // Use absolute positioning
@@ -68,11 +73,24 @@ const VerifyTwoFactorAuth = () => {
       marginTop: '10px',
       padding: '10px 20px',
       borderRadius: '5px',
+<<<<<<< HEAD
       border: 'none',
       cursor: 'pointer',
       backgroundColor: '#0056b3',
       color: '#fff',
       fontWeight: 'bold',
+=======
+      border: '1px solid #ccc',
+      border: 'none',
+      cursor: 'pointer',
+      backgroundColor: '#f0f0f0',
+      backgroundColor: '#0056b3',
+      color: '#fff',
+      fontWeight: 'bold',
+    },
+    image: {
+      marginTop: '20px',
+>>>>>>> db898771d316229965b3eb3a28e0278f2c4f862d
       textTransform: 'uppercase',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
       width: '100%', // Make the button full width of the container
@@ -87,8 +105,25 @@ const VerifyTwoFactorAuth = () => {
     }
   };
 
+//   return (
+//     <div style={styles.container}>
+//       <h2>Verify Two-Factor Authentication</h2>
+//       <input
+//         type="text"
+//         value={otp}
+//         onChange={(e) => setOtp(e.target.value)}
+//         placeholder="Enter your OTP"
+//       />
+//       <button onClick={verifyOtp}>Verify</button>
+//     </div>
+//   );
+// };
   return (
     <div style={styles.container}>
+<<<<<<< HEAD
+=======
+      <h2>Verify Two-Factor Authentication</h2>
+>>>>>>> db898771d316229965b3eb3a28e0278f2c4f862d
       <h2 style={styles.title}>Verify Two-Factor Authentication</h2>
       <input
         style={styles.input}
@@ -97,6 +132,10 @@ const VerifyTwoFactorAuth = () => {
         onChange={(e) => setOtp(e.target.value)}
         placeholder="Enter your OTP"
       />
+<<<<<<< HEAD
+=======
+      <button onClick={verifyOtp}>Verify</button>
+>>>>>>> db898771d316229965b3eb3a28e0278f2c4f862d
       <button
         style={styles.button}
         onClick={verifyOtp}
@@ -106,6 +145,6 @@ const VerifyTwoFactorAuth = () => {
       </button>
     </div>
   );
-};
+  };
 
 export default VerifyTwoFactorAuth;
