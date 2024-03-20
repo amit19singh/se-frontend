@@ -39,43 +39,9 @@ const NavBar = () => {
 
   // Filter dropdown state
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState({ location: '', mutualFriends: false, hashtag: '', topic: ''});
+  const [selectedFilters, setSelectedFilters] = useState({ livesIn: '', mutualFriends: false, hashtag: '', topic: ''});
+  const [mutualFriendsChecked, setMutualFriendsChecked] = useState(false);
 
-  
-
-
-  const handleFilterChange = (filterName, value) => {
-    setSelectedFilters(prevFilters => ({
-      ...prevFilters,
-      [filterName]: value,
-    }));
-  };
-  
-  const toggleDropdown = () => {
-    setDropdownVisible(!dropdownVisible);
-    setSettingsSubmenuVisible(false); 
-  };
-
-  
-  const toggleSettingsSubmenu = (e) => {
-    e.stopPropagation();
-    setSettingsSubmenuVisible(!settingsSubmenuVisible);
-  };
-
-  const applyFilters = () => {
-    // Close the filter dropdown
-    setFilterDropdownVisible(false);
-    
-    // Example logic to apply filters
-    // This will depend on how your data is structured and how you're fetching/searching it
-    console.log("Applying filters:", selectedFilters);
-    // Assuming you have a function to fetch or filter your search results
-    // You would pass the selectedFilters object to this function
-    // For demonstration, let's just log the filters to the console
-    // In a real app, you might call a function like this:
-    // fetchSearchResults(searchQuery, selectedFilters);
-  };
-  
 
 
   useEffect(() => {
@@ -101,19 +67,52 @@ const NavBar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
   };
 
 
-  // SEARCH  
+
+  const handleFilterChange = (filterName, value) => {
+    if (filterName === 'mutualFriends') {
+      setMutualFriendsChecked(value);
+    }
+    setSelectedFilters(prevFilters => ({
+      ...prevFilters,
+      [filterName]: value,
+    }));
+  };
+  
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+    setSettingsSubmenuVisible(false); 
+  };
+
+  
+  const toggleSettingsSubmenu = (e) => {
+    e.stopPropagation();
+    setSettingsSubmenuVisible(!settingsSubmenuVisible);
+  };
+
+
+  // SEARCH
   const onSearch = async () => {
     try {
-      const results = await handleSearch(searchQuery);
-      navigate(`/search-results?query=${encodeURIComponent(searchQuery)}`);
+      console.log("In NavigationBar");
+      const filtersQuery = Object.entries(selectedFilters)
+        .filter(([_, value]) => value !== false && value !== '')
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+        .join('&');
+  
+      const searchUrl = `/search-results?query=${encodeURIComponent(searchQuery)}&${filtersQuery}`;
+  
+      const results = await handleSearch(searchQuery, selectedFilters); 
+      console.log("In NavigationBar");
+      // navigate(searchUrl);
+      navigate(searchUrl, { state: { results: results } });
     } catch (error) {
       alert('Search failed: ' + error.message);
     }
   };
+  
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -188,29 +187,33 @@ const NavBar = () => {
           {filterDropdownVisible && (
             <div className="filter-dropdown" style={{ display: 'block' }}> {/* Inline style for demonstration */}
               <div>
-                <label>Location:</label>
-                <input type="text" placeholder="Location" onChange={(e) => handleFilterChange('location', e.target.value)} />
+                {/* <input type="text" placeholder="Lives In" onChange={(e) => handleFilterChange('livesIn', e.target.value)} /> */}
+                <input
+                  type="text"
+                  placeholder="Lives In"
+                  value={selectedFilters.livesIn} // Bind input value to state
+                  onChange={(e) => handleFilterChange('livesIn', e.target.value)}
+                />
               </div>
               <div>
                 <label>
-                  <input type="checkbox" onChange={(e) => handleFilterChange('mutualFriends', e.target.checked)} />
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handleFilterChange('mutualFriends', e.target.checked)}
+                    checked={mutualFriendsChecked} // Control the checkbox with your state
+                  />
                   Mutual Friends
+
                 </label>
               </div>
               {/* Hashtag filter */}
               <div>
-                <label>Hashtag:</label>
                 <input type="text" placeholder="#hashtag" onChange={(e) => handleFilterChange('hashtag', e.target.value)} />
               </div>
               {/* Topic filter */}
               <div>
-                <label>Topic:</label>
                 <input type="text" placeholder="Topic" onChange={(e) => handleFilterChange('topic', e.target.value)} />
               </div>
-              {/* Add more filters as needed */}
-
-              {/* Apply button */}
-              <button onClick={applyFilters}>Apply</button>
             </div>
           )}
 
@@ -267,8 +270,8 @@ const NavBar = () => {
                       <li onClick={() => navigate('/2FA', { state: { username: userName , 
                                                 isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</li>
                       <li onClick={() => navigate('/blocked-users')}>Blocked Users</li>
-                      {/* <li onClick={() => navigate('/blocked-users')}>Make Profile Private</li> */}
-                      {/* <li onClick={() => navigate('/blocked-users')}>Delete Account</li> */}
+                      <li onClick={() => navigate('/blocked-users')}>Make Profile Private</li>
+                      <li onClick={() => navigate('/blocked-users')}>Delete Account</li>
                     </ul>
                   )}
                 </li>

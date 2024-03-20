@@ -8,35 +8,25 @@ function useQuery() {
 }
 
 const SearchResultsPage = () => {
-  const query = useQuery().get('query');
+  const location = useLocation();
+  const results = location.state?.results;
   const [searchResultsUser, setSearchResultsUser] = useState([]);
   const [searchResultsPost, setSearchResultsPost] = useState([]);
   const [friendRequestsPending, setFriendRequestsPending] = useState([]);
   const [friends, setFriends] = useState([]);
   
-  const { handleSearch, handleAddFriend, handleRemoveFriend, 
+  const { handleAddFriend, handleRemoveFriend, 
     handleBlockUser, handleUnblockUser } = useUserActions();
   
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      try {
-        const results = await handleSearch(query);
-        console.log("resuts: ", results);
+    useEffect(() => {
+      if (results) {
+        console.log("results: ", results);
         setSearchResultsUser(results.users);
         setSearchResultsPost(results.posts);
-      } catch (error) {
-        console.error('Failed to fetch search results:', error);
-        setSearchResultsUser([]);
-        setSearchResultsPost([]);
       }
-    };
-
-    if (query) {
-      fetchSearchResults();
-    }
-  }, [query]);
+    }, [results]);
 
 
       // ADD FRIEND

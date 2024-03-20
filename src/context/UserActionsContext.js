@@ -95,30 +95,42 @@ export const UserActionsProvider = ({ children }) => {
 
 
   // HANDLE SEARCH
-  const handleSearch = useCallback(async (searchQuery) => {
-    if (!token) {
-      logout();
-      return;
-    }
-
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/search?query=${encodeURIComponent(searchQuery)}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.status === 200) {
-        console.log("data:", response.data);
-        return response.data; 
-      } else {
-        throw new Error('Search failed');
+  const handleSearch = useCallback(async (searchQuery, filters = {}) => { // Default filters to {} if not provided
+      if (!token) {
+        logout();
+        return;
       }
-    } catch (error) {
-      console.error('Error during search:', error);
-      throw error; 
-    }
-  }, [token, logout]);
+    
+      try {
+        const safeFilters = filters || {};
+        const filtersQuery = Object.entries(safeFilters)
+          .filter(([_, value]) => value !== false && value !== '')
+          .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+          .join('&');
+    
+        // Append filters to the search query URL
+        const hasFilters = filtersQuery.length > 0;
+        const fullUrl = `${process.env.REACT_APP_BACKEND_URL}/search?query=${encodeURIComponent(searchQuery)}${hasFilters ? '&' + filtersQuery : ''}`;
+    
+        const response = await axios.get(fullUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+    
+        if (response.status === 200) {
+          console.log("data userAuth:", response.data);
+          return response.data;
+        } else {
+          throw new Error('Search failed');
+        }
+      } catch (error) {
+        console.error('Error during search:', error);
+        throw error;
+      }
+    }, [token, logout]);
+  
+  
 
 
   // ADD FRIENDS
