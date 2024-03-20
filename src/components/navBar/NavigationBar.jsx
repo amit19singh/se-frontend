@@ -96,7 +96,6 @@ const NavBar = () => {
   // SEARCH
   const onSearch = async () => {
     try {
-      console.log("In NavigationBar");
       const filtersQuery = Object.entries(selectedFilters)
         .filter(([_, value]) => value !== false && value !== '')
         .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
@@ -105,8 +104,6 @@ const NavBar = () => {
       const searchUrl = `/search-results?query=${encodeURIComponent(searchQuery)}&${filtersQuery}`;
   
       const results = await handleSearch(searchQuery, selectedFilters); 
-      console.log("In NavigationBar");
-      // navigate(searchUrl);
       navigate(searchUrl, { state: { results: results } });
     } catch (error) {
       alert('Search failed: ' + error.message);
@@ -270,8 +267,8 @@ const NavBar = () => {
                       <li onClick={() => navigate('/2FA', { state: { username: userName , 
                                                 isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</li>
                       <li onClick={() => navigate('/blocked-users')}>Blocked Users</li>
-                      <li onClick={() => navigate('/blocked-users')}>Make Profile Private</li>
-                      <li onClick={() => navigate('/blocked-users')}>Delete Account</li>
+                      <li onClick={() => navigate('/private-profile')}>Make Profile Private</li>
+                      <li onClick={() => navigate('/delete-account')}>Delete Account</li>
                     </ul>
                   )}
                 </li>

@@ -19,14 +19,16 @@ const Posts = () => {
     const fetchDetailsAndSetState = async () => {
       const token = localStorage.getItem('token');
       if (!user && token) {
-        await fetchUserDetails(token); 
+        await fetchUserDetails(token);
+        // await 
       } else if (!token) {
         handleLogout();
         return; 
       }
 
       if (user) {
-        setPosts(user.posts || []);
+        // setPosts(user.posts || []);
+        setPosts(user.newsFeed || []);
       }
     }; fetchDetailsAndSetState();
   }, [user, navigate, fetchUserDetails]);
@@ -68,7 +70,8 @@ const Posts = () => {
       key={post.postId}
       onLikePost={onLikePost}
       onUnlikePost={onUnlikePost}
-      onDeletePost={onDeletePost}/>
+      // onDeletePost={onDeletePost}
+      />
     ))}
   </div>;
 };

@@ -10,14 +10,39 @@ import './post.scss'
 
 const Post = ({ post, onLikePost, onUnlikePost, onDeletePost }) => {
   const [commentOpen, setCommentOpen] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(post.likedByCurrentUser || false);
+  const [likesCount, setLikesCount] = useState(post.likes.length);
+
 
   
+  // const toggleLike = () => {
+  //   setLiked(!liked);
+  //   liked ? onUnlikePost(post.postId) : onLikePost(post.postId);
+  // };
   const toggleLike = () => {
-    setLiked(!liked);
-    
-    liked ? onUnlikePost(post.postId) : onLikePost(post.postId);
+    const isCurrentlyLiked = liked;
+    const newLikesCount = isCurrentlyLiked ? likesCount - 1 : likesCount + 1;
+  
+    // Optimistically update UI
+    setLiked(!isCurrentlyLiked);
+    setLikesCount(newLikesCount);
+  
+    // Synchronize with backend
+    if (isCurrentlyLiked) {
+      onUnlikePost(post.postId).catch(() => {
+        // Revert changes in case of an error
+        setLiked(isCurrentlyLiked);
+        setLikesCount(likesCount);
+      });
+    } else {
+      onLikePost(post.postId).catch(() => {
+        // Revert changes in case of an error
+        setLiked(isCurrentlyLiked);
+        setLikesCount(likesCount);
+      });
+    }
   };
+  
 
   
 
@@ -34,13 +59,12 @@ const Post = ({ post, onLikePost, onUnlikePost, onDeletePost }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            {/* Assuming profilePic exists */}
-            {post.profilePic && <img src={post.profilePic} alt="" />}
+            {/* profilePic */}
+            {post.postByUserProfilePic && <img src={post.postByUserProfilePic} alt="" />}
             <div className="details">
-              <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
-                <span className="name">{post.name}</span>
+              <Link to={`/user/${post.postByUserName}`} style={{ textDecoration: "none", color: "inherit" }}>
+                <span className="name">@{post.postByUserName}</span>
               </Link>
-              {/* Simplifying to "1 min ago" for now. Use post.createdAt for actual data */}
             </div>
           </div>
           {/* <MoreHorizIcon /> */}
@@ -61,20 +85,21 @@ const Post = ({ post, onLikePost, onUnlikePost, onDeletePost }) => {
         <div className="info">
           <div className="item" onClick={toggleLike} >
             {liked ? <FavoriteOutlinedIcon className="custom-icon-size" /> : <FavoriteBorderOutlinedIcon className="custom-icon-size" />}
-            12 Likes {/* Placeholder for like count */}
+            {/* {post.likes.length} Likes */}
+            {likesCount} Likes
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon className="custom-icon-size" />
-            12 Comments {/* Placeholder for comment count */}
+            {post.comments.length} Comments
           </div>
           <div className="item">
             <ShareOutlinedIcon className="custom-icon-size" />
             Share
           </div>
-          <div className="item" onClick={() => onDeletePost(post.postId)}>
+          {/* <div className="item" onClick={() => onDeletePost(post.postId)}>
             <DeleteOutlineIcon className="custom-icon-size"/>
             Delete
-          </div>
+          </div> */}
         </div>
         {post.createdAt && (
           <div className="date" style={{ color: '#777', fontSize: '0.8rem', marginTop: '10px' }}>
