@@ -279,7 +279,8 @@ const NavBar = () => {
         <NotificationsOutlinedIcon />
         <div className="user">
           <img
-            src={profilePic}
+            // src={profilePic}
+            src={profilePic ? profilePic : "https://robohash.org/mail@ashallendesign.co.uk"}
             alt=""
           />
 

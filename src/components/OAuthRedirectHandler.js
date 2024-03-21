@@ -10,11 +10,11 @@ const OAuthRedirectHandler = () => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
     if (token) {
-      console.log("Token found in URL:", token);
+      console.log("Token found in URL HERE:", token);
       loginWithToken(token);
       navigate('/home');
     } else {
-      navigate('/login');
+      navigate('/');
     }
   }, [navigate, loginWithToken]);
 

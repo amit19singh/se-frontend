@@ -106,7 +106,7 @@ const Share = () => {
   </div>
 )}
     <div className="top">
-      <img src={profilePic} alt="" />
+      <img src={profilePic ? profilePic : "https://robohash.org/mail@ashallendesign.co.uk"} alt="" />
       <input 
         placeholder={`What's on your mind ${userName}?`}
         value={postText} 
