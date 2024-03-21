@@ -1,9 +1,21 @@
+// Import Montserrat font from Google Fonts with all weights and styles
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+// Apply Montserrat font to the body element
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+
+
+
 $themes: (
   light: (
     textColor: #000,
-    bg: white,
+    bg: #bebebe,
     logo: darkblue,
-    bgSoft: #f6f3f3,
+    bgSoft: #b7aeae,
     textColorSoft: #555,
     border: lightgray,
   ),

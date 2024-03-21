@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './CSS/EditProfile.module.css';
+import { useAuth } from '../context/AuthContext';
 
 const EditProfile = () => {
   const [firstName, setFirstName] = useState('');
@@ -11,10 +12,30 @@ const EditProfile = () => {
   const [livesIn, setLivesIn] = useState('');
   const [userHometown, setUserHometown] = useState('');
   const [relationshipStatus, setRelationshipStatus] = useState('');
-  const navigate = useNavigate();
-
   
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [profilePicPreview, setProfilePicPreview] = useState('');
+
+  useEffect(() => {
+    if (user && user.profilePicUrlDisplay) {
+      setProfilePicPreview(user.profilePicUrlDisplay);
+    }
+  }, [user]);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePicPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleProfileUpdate = async () => {
+  
     const formData = new FormData();
     formData.append('firstname', firstName);
     formData.append('lastname', lastName);
@@ -24,9 +45,13 @@ const EditProfile = () => {
     formData.append('userHometown', userHometown);
     formData.append('relationshipStatus', relationshipStatus);
     
+
+
+
     if (profilePicUrl) {
         formData.append('profilePicUrl', profilePicUrl);
     }
+    
 
     try {
       const token = localStorage.getItem('token');
@@ -50,10 +75,10 @@ const EditProfile = () => {
       console.error('Error updating profile:', error);
     }
   };
-
 return (
   <div className={styles.container}>
     <h2 className={styles.title}>Edit Profile</h2>
+    <div className={styles.form_div}>
     <form onSubmit={(e) => {
         e.preventDefault();
         handleProfileUpdate();
@@ -70,7 +95,6 @@ return (
         <option value="female">Female</option>
         <option value="other">Other</option>
       </select>
-      <input className={styles.fileInput} type="file" placeholder="Profile Picture URL" accept="image/*" onChange={(e) => setProfilePicUrl(e.target.files[0])} />
       <input className={styles.input} type="text" placeholder="Lives In" value={livesIn} onChange={(e) => setLivesIn(e.target.value)} />
       <input className={styles.input} type="text" placeholder="Hometown" value={userHometown} onChange={(e) => setUserHometown(e.target.value)} />
       <select className={styles.select} value={relationshipStatus} onChange={(e) => setRelationshipStatus(e.target.value)}>
@@ -80,8 +104,20 @@ return (
         <option value="married">Married</option>
         <option value="complicated">It's Complicated</option>
       </select>
+      </form>
+      <div className={styles.profilePicContainer}>
+      {profilePicPreview && (
+          <img src={profilePicPreview} alt="Profile Preview" className={styles.profilePicPreview} />
+        )}
+        <input 
+          className={styles.fileInput} 
+          type="file" 
+          accept="image/*" 
+          onChange={handleFileChange} 
+        />
+      </div>
+      </div>
       <button className={styles.button} type="submit">Update Profile</button>
-    </form>
   </div>
 );
 };

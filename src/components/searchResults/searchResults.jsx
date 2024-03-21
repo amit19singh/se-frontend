@@ -135,6 +135,34 @@ const SearchResultsPage = () => {
     </div>
     ))}
 
+      <div>
+        <h1>Images</h1>
+        {searchResultsUser.map((user, index) => (
+          <div key={index}>
+            <h2>{user.firstname} {user.lastname}</h2>
+            {user.images.map((image, imageIndex) => (
+              <img key={imageIndex} src={image} alt={`Image ${imageIndex}`} />
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <div>
+        <h1>Videos</h1>
+        {searchResultsUser.map((user, index) => (
+          <div key={index}>
+            <h2>{user.firstname} {user.lastname}</h2>
+            {user.videos.map((video, videoIndex) => (
+              <video key={videoIndex} controls>
+                <source src={video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ))}
+          </div>
+        ))}
+      </div>
+
+
     </div>
     </div>
 

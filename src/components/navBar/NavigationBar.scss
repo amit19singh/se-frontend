@@ -12,6 +12,22 @@
   background-color: rgb(149, 181, 240); //themed("bg");
   z-index: 999;
 
+  .left, .right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    // This will apply to all direct children that are icons
+    > * {
+      transition: transform 0.3s ease, fill 0.3s ease; // Smooth transition for transform and fill color
+
+      &:hover {
+        transform: translateY(-2px); // Slight upward lift
+        fill: darken(#4C9AFF, 15%); // Assuming icons have a fill property
+      }
+    }
+  }
+
   .left {
     display: flex;
     align-items: center;
@@ -242,4 +258,19 @@
       }
     }
   }
+
+    // Material-UI icons specifically
+    svg {
+      // If the icons don't react to `fill`, you might need to change this to `color`
+      fill: currentColor; // Ensure icons take the text color by default
+      transition: transform 0.3s ease, fill 0.3s ease; // Smooth transition for transform and fill color
+  
+      &:hover {
+        transform: translateY(-2px); // Slight upward lift
+        fill: darken(#4C9AFF, 15%); // Darken the icon fill color on hover
+      }
+    }
+
 }
+
+

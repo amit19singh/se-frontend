@@ -1,0 +1,21 @@
+// UserHome.scss
+
+.user-home {
+  padding: 0px 80px;
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .profile-container {
+    margin-bottom: 20px;
+  }
+
+  .share-container {
+    margin-bottom: 20px;
+    position: absolute;
+    top: 150px;
+    left: 420px;
+  }
+}

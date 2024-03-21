@@ -1,7 +1,8 @@
 import "./share.scss";
-import Image from "../../assets/img.png";
-import Map from "../../assets/map.png";
-import Friend from "../../assets/friend.png";
+import Image from "../../assets/image-gallery.png";
+import Map from "../../assets/cam-recorder.png";
+import Friend from "../../assets/tag.png";
+import Send from "../../assets/send.png";
 import { useAuth } from '../../context/AuthContext'; 
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from 'react';
@@ -21,7 +22,7 @@ const Share = () => {
   const { user, logout, fetchUserDetails } = useAuth();
   const { handleUpload, handleDeletePost } = useUserActions();
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
-
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const navigate = useNavigate();
 
@@ -65,14 +66,14 @@ const Share = () => {
     }
   };
   const onUpload = async () => {
-    console.log("HERE2: ");
+    setLoading(true); // Set loading state to true
     const formData = new FormData();
     formData.append('caption', 'caption');
     formData.append('post', postText);
     if (image) formData.append('image', image);
     if (video) formData.append('video', video);
     await handleUpload(formData);
-
+    setLoading(false);
   };
 
   // POST DELETES
@@ -85,10 +86,13 @@ const Share = () => {
 
 
   return (
-  <div className="share"   style={{
-    fontFamily: '"Roboto", sans-serif', // Replace with the font you want to use
-    // ... any other styles you want to apply to the .share div
-  }}>
+  <div className="share"   style={{fontFamily: '"Roboto", sans-serif'}}>
+        {loading && (
+        <div className="loading-window">
+          Uploading...
+        </div>
+      )}
+
   <div className="container">
   {imagePreviewUrl && (
   <div className="image-preview" style={{ margin: '10px 0', textAlign: 'center' }}>
@@ -156,7 +160,7 @@ const Share = () => {
         </div>
       </div>
       <div className="right">
-        <button onClick={onUpload}>Share</button>
+        <button onClick={onUpload} ><img src={Send} style={{width:'2em',}}></img></button>
       </div>
     </div>
   </div>

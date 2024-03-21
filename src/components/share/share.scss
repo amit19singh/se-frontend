@@ -7,7 +7,7 @@
     box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
     border-radius: 20px;
     background-color: white; // themed("bg");
-    color: blue; //themed("textColor");
+    color: rgb(247, 247, 247); //themed("textColor");
     margin-bottom: 20px;
 
     .container {
@@ -44,6 +44,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding: 5px;
         .left {
           display: flex;
           align-items: center;
@@ -67,12 +68,17 @@
         }
         .right {
           button {
+            font-size: 12px;
             border: none;
             padding: 5px;
             color: white;
             cursor: pointer;
-            background-color: #5271ff;
-            border-radius: 3px;
+            background-color: #adb9ec;
+            border-radius: 10px;
+
+            &:hover{
+              background-color: #d5d9ea;
+            }
           }
         }
       }
