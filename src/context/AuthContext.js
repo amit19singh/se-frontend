@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 
 
@@ -7,6 +7,24 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+
+  useEffect(() => {
+    console.log("HERE");
+    // On component mount, check if the user is authenticated via OAuth
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUserDetails(token).then(() => {
+        // Optionally, update isAuthenticated based on successful fetch
+        setAuthState(prevState => ({
+          ...prevState,
+          isAuthenticated: true,
+          token: token, // Ensure token is correctly set
+        }));
+      }).catch(err => console.error("Failed to fetch user details with token:", err));
+    }
+  }, []);
+
+  
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     user: null,
@@ -14,6 +32,7 @@ export const AuthProvider = ({ children }) => {
   });
 
   const fetchUserDetails = useCallback(async (token) => {
+    console.log("YESS");
     try {
       const userDetailResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/userDetail`, {
         headers: {
@@ -29,7 +48,6 @@ export const AuthProvider = ({ children }) => {
         console.error('Could not fetch user details.');
       }
     } catch (error) {
-      logout();
       console.error('Error fetching user details:', error);
     }
   });
@@ -53,7 +71,7 @@ export const AuthProvider = ({ children }) => {
         return response.data;
       }
     } catch (error) {
-      logout();
+      // logout();
       console.error('Login or user detail fetch error:', error.response ? error.response.data : error.message);
       throw error; 
     }

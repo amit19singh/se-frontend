@@ -6,13 +6,21 @@ import Share from './share/Share';
 import './UserHome.scss';
 
 const UserHome = () => {
+  const { user, logout, fetchUserDetails } = useAuth();
+  
   const [userName, setUserName] = useState('');
   const { user, logout, fetchUserDetails } = useAuth();
   const navigate = useNavigate();
 
+<<<<<<< HEAD
+=======
+
+  // PAGE INIT
+>>>>>>> 3ba4cffd9ee26fcf03f5c08a78fa15d46943104a
   useEffect(() => {
     const fetchDetailsAndSetState = async () => {
       const token = localStorage.getItem('token');
+      console.log("token", token);
       if (!user && token) {
         await fetchUserDetails(token);
       } else if (!token) {

@@ -11,7 +11,17 @@ const SearchResultsPage = () => {
   const query = useQuery().get('query');
   const [searchResultsUser, setSearchResultsUser] = useState([]);
   const [searchResultsPost, setSearchResultsPost] = useState([]);
+<<<<<<< HEAD
   const [friendRequestsPending, setFriendRequestsPending] = useState([]);
+=======
+<<<<<<< HEAD
+  const [loading, setLoading] = useState(false);
+
+  const { handleSearch, handleAddFriend, handleRemoveFriend, 
+    handleBlockUser, handleUnblockUser } = useUserActions();
+
+=======
+>>>>>>> 3ba4cffd9ee26fcf03f5c08a78fa15d46943104a
   const [friends, setFriends] = useState([]);
   
   const { handleSearch, handleAddFriend, handleRemoveFriend, 
