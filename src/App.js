@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Routes, Outlet, HashRouter } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import RegisterPage from './components/RegisterPage';
 import AccountVerified from './components/AccountVerified';
@@ -15,6 +15,7 @@ import FriendsList from './components/FriendsList';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProfilePage from './components/ProfilePage';
 import SearchResultsPage from './components/searchResults/searchResults';
+import OAuthRedirectHandler from './components/OAuthRedirectHandler';
 import { useDarkMode } from './context/DarkModeContext';
 
 import "./style.scss";
@@ -48,7 +49,6 @@ function App() {
   const theme = darkMode ? themes.dark : themes.light;
 
   const Layout = () => {
-    console.log("LAYOUT: ", darkMode);
     return (
     
     <div style={{ color: theme.textColor, backgroundColor: theme.bg }}>
@@ -71,6 +71,8 @@ function App() {
         <Routes>
 
           <Route path="/" element={<LandingPage />} />
+
+          <Route path="/oauth-redirect" element={<OAuthRedirectHandler />} />
           
           <Route path="/register" element={<RegisterPage />} />
  
@@ -108,16 +110,18 @@ function App() {
               // </ProtectedRoute>
             } />
 
-          </Route>
-          {/* ----- LAYOUT ROUTE END ----- */}
-
-
-          
           <Route path="/user/:username" element={
             // <ProtectedRoute sequentialAccessRequired={true} redirectTo="/">
               <ProfilePage />
             // </ProtectedRoute>
           } />
+
+          </Route>
+          {/* ----- LAYOUT ROUTE END ----- */}
+
+
+          
+          
 
           <Route path="/UsernameSubmissionComponent" element={
               // <ProtectedRoute requireAuth={true}>

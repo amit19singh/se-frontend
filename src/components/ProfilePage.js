@@ -25,7 +25,7 @@ const ProfilePage = () => {
     <div>
       <h1>{profile?.firstname} {profile?.lastname}</h1>
       
-      {profile?.posts.map((post, index) => (
+      {profile?.posts && profile?.posts.map((post, index) => (
       <div key={index} style={{
         border: '1px solid #ccc',
         borderRadius: '10px',
@@ -34,6 +34,10 @@ const ProfilePage = () => {
         backgroundColor: '#fff',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <img src={post.postByUserProfilePic} alt="Profile" style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '10px' }} />
+          <h4 style={{ margin: '0' }}>@{profile?.username}</h4>
+        </div>
         <h3 style={{ margin: '0 0 10px 0' }}>{post.caption}</h3>
         <p style={{ margin: '0 0 10px 0' }}>{post.post}</p>
         {post.imageUrl && (

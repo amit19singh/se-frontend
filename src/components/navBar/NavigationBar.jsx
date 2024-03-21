@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   
-  const { user, logout, fetchUserDetails } = useAuth();
+  const { user, logout, fetchUserDetails, token } = useAuth();
   const { handleSearch, handleAcceptRequest, handleRejectRequest } = useUserActions();
   const { toggle, darkMode } = useDarkMode();
 
@@ -29,6 +29,7 @@ const NavBar = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [friendRequestsPending, setFriendRequestsPending] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [isPublic, setIsPublic] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -61,6 +62,7 @@ const NavBar = () => {
         setisTwoFactorEnabled(user.twoFactorEnabled || false);
         setFriendRequests(user.friendRequestsPending || []);
         setFriends(user.friends || []);
+        setIsPublic(user.profilePublic || false);
       }
     }; fetchDetailsAndSetState();
   }, [user, navigate, fetchUserDetails]);
@@ -109,6 +111,36 @@ const NavBar = () => {
       alert('Search failed: ' + error.message);
     }
   };
+
+  const toggleProfilePrivacy = async () => {
+    console.log("isPublic: ", isPublic);
+    const newPrivacySetting = !isPublic;
+    console.log("newPrivacySetting: ", newPrivacySetting);
+
+    try {
+        console.log("trying");
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/updateProfileVisibility`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ isProfilePublic: newPrivacySetting })
+        });
+
+        if (response.ok) {
+          console.log("newPrivacySetting1: ", newPrivacySetting);
+            setIsPublic(newPrivacySetting);
+        } else {
+            console.error('Failed to update profile visibility');
+            const errorMessage = await response.text();
+            console.error(errorMessage);
+        }
+      } catch (error) {
+          console.error('An error occurred:', error);
+      }
+  };
+
   
 
   const handleKeyDown = (event) => {
@@ -182,13 +214,12 @@ const NavBar = () => {
           {/* Filter dropdown */}
           {/* Filter dropdown */}
           {filterDropdownVisible && (
-            <div className="filter-dropdown" style={{ display: 'block' }}> {/* Inline style for demonstration */}
+            <div className="filter-dropdown" style={{ display: 'block' }}> 
               <div>
-                {/* <input type="text" placeholder="Lives In" onChange={(e) => handleFilterChange('livesIn', e.target.value)} /> */}
                 <input
                   type="text"
                   placeholder="Lives In"
-                  value={selectedFilters.livesIn} // Bind input value to state
+                  value={selectedFilters.livesIn} 
                   onChange={(e) => handleFilterChange('livesIn', e.target.value)}
                 />
               </div>
@@ -197,7 +228,7 @@ const NavBar = () => {
                   <input
                     type="checkbox"
                     onChange={(e) => handleFilterChange('mutualFriends', e.target.checked)}
-                    checked={mutualFriendsChecked} // Control the checkbox with your state
+                    checked={mutualFriendsChecked} 
                   />
                   Mutual Friends
 
@@ -267,7 +298,7 @@ const NavBar = () => {
                       <li onClick={() => navigate('/2FA', { state: { username: userName , 
                                                 isTwoFactorEnabled: isTwoFactorEnabled} })}>2 Factor Authentication</li>
                       <li onClick={() => navigate('/blocked-users')}>Blocked Users</li>
-                      <li onClick={() => navigate('/private-profile')}>Make Profile Private</li>
+                      <li onClick={toggleProfilePrivacy}>{isPublic ? 'Make Profile Private': 'Make Profile Public' }</li>
                       <li onClick={() => navigate('/delete-account')}>Delete Account</li>
                     </ul>
                   )}

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 
 
@@ -7,11 +7,26 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+
+
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     user: null,
     token: localStorage.getItem('token') || null,
   });
+
+  const loginWithToken = async (token) => {
+    localStorage.setItem('token', token);
+    setAuthState({
+      isAuthenticated: true,
+      token: token,
+      user: null, 
+    });
+
+    await fetchUserDetails(token);
+        
+    
+  };
 
   const fetchUserDetails = useCallback(async (token) => {
     try {
@@ -69,7 +84,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ ...authState, login, logout , fetchUserDetails}}>
+    <AuthContext.Provider value={{ ...authState, login, loginWithToken, logout , fetchUserDetails}}>
       {children}
     </AuthContext.Provider>
   );
