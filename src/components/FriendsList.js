@@ -68,6 +68,9 @@ function FriendsList() {
               <button onClick={() => removeFriend(friend.id)}>Remove Friend</button>
               <button onClick={() => blockUser(friend.id)}>Block</button>
               <button onClick={() => navigate(`/user/${friend.username}`)}>View Profile</button>
+              <button onClick={() => navigate(`/chat-service/${friend.username}`, { state: { receiverName: friend.username } })}>
+                Message
+              </button>
             </li>
           ))}
         </ul>

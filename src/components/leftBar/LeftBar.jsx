@@ -48,9 +48,7 @@ const LeftBar = () => {
     logout();
     navigate('/');
   };
-
-  // console.log("LEFT BAR USER: ", user);
-
+  
   return (
     <div className="leftBar">
       <div className="container">
