@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 var stompClient = null;
 
@@ -10,6 +11,8 @@ const ChatService = () => {
   const [privateChats, setPrivateChats] = useState(new Map());
   const [tab, setTab] = useState("");
   const { user, logout, fetchUserDetails } = useAuth();
+  const { username: userChat } = useParams();
+
   const [userData, setUserData] = useState({
     username: '',
     receivername: '',
@@ -19,6 +22,8 @@ const ChatService = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const receiverName = location.state?.receiverName;
+  
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (receiverName) {
@@ -30,7 +35,6 @@ const ChatService = () => {
     }
     
     const fetchDetailsAndSetState = async () => {
-      const token = localStorage.getItem('token');
       if (!user && token) {
         await fetchUserDetails(token);
       } else if (!token) {
@@ -44,7 +48,14 @@ const ChatService = () => {
       
     };
 
+    const fetchChats = async () => {
+      if (user && token) {
+        await fetchChatHistory(userChat);
+      }     
+    };
+
     fetchDetailsAndSetState();
+    fetchChats();
   }, [user, navigate, fetchUserDetails, receiverName]);
 
   useEffect(() => {
@@ -56,6 +67,27 @@ const ChatService = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const fetchChatHistory = async (userChat) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/chat/history/${userChat}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error('Failed to fetch chat history');
+      const chatHistory = await response.json();
+
+      console.log("chatHistory: ", chatHistory);
+      
+      // Assuming chatHistory is an array of chat messages
+      setPrivateChats(prevChats => new Map(prevChats.set(userChat, chatHistory)));
+    } catch (error) {
+      console.error("Fetching chat history failed:", error);
+      // Handle error (e.g., show error message)
+    }
   };
 
   const connect = () => {

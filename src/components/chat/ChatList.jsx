@@ -45,7 +45,7 @@ const ChatList = () => {
       {/* {Array.from(chats.entries()).map(([username, messages]) => ( */}
       {chats.map(username => (
         <div key={username} className="chat-preview" onClick={() => handleChatSelect(username)}>
-          <div className="username">{username}</div>
+          <div className="username">@{username}</div>
           {/* <div className="last-message">{messages[messages.length - 1]?.message || "No messages"}</div> */}
         </div>
       ))}
