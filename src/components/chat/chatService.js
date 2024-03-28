@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 import { useAuth } from '../../context/AuthContext';
@@ -19,6 +19,7 @@ const ChatService = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const receiverName = location.state?.receiverName;
+  const subscriptionRef = useRef(null);
 
   useEffect(() => {
     if (receiverName) {
@@ -41,6 +42,7 @@ const ChatService = () => {
       if (user) {
         setUserData(prevState => ({ ...prevState, username: user.username || '' }));
       }
+      
     };
 
     fetchDetailsAndSetState();
@@ -50,7 +52,7 @@ const ChatService = () => {
     if (userData.username && !stompClient) {
       connect();
     }
-  }, [userData.username]); // Depend on userData.username to ensure connection is attempted after username is set
+  }, [userData.username]); 
 
   const handleLogout = () => {
     logout();
