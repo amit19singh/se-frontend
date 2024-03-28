@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 import { useAuth } from '../../context/AuthContext';
@@ -19,7 +19,6 @@ const ChatService = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const receiverName = location.state?.receiverName;
-  const subscriptionRef = useRef(null);
 
   useEffect(() => {
     if (receiverName) {
@@ -114,14 +113,11 @@ const ChatService = () => {
     setUserData({ ...userData, message: event.target.value });
   };
 
-  const handleUsername = (event) => {
-    const { value } = event.target;
-    setUserData({ ...userData, "username": value });
-  }
-
-  const registerUser = () => {
-    connect();
-  }
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      sendPrivateMessage();
+    }
+  };
 
 
   return (
@@ -149,7 +145,7 @@ const ChatService = () => {
                 </li>
               ))}
             </ul>
-  
+            
             <div className="send-message">
               <input
                 type="text"
@@ -157,28 +153,20 @@ const ChatService = () => {
                 placeholder="Enter the message"
                 value={userData.message}
                 onChange={handleMessageChange}
-                // Removed the disabled condition from here to allow typing at any time
+                onKeyDown={handleKeyPress} // Moved here
               />
-              <button type="button" className="send-button" onClick={sendPrivateMessage}>
+              <button 
+                type="button" 
+                className="send-button" 
+                onClick={sendPrivateMessage}
+              >
                 Send
               </button>
             </div>
 
+
           </div>
       </div>
-      {!userData.connected && (
-        <div className="register">
-          <input
-            type="text"
-            placeholder="Enter your username"
-            value={userData.username}
-            onChange={handleUsername}
-          />
-          <button type="button" onClick={registerUser}>
-            Connect
-          </button>
-        </div>
-      )}
     </div>
   );
   

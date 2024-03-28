@@ -153,6 +153,10 @@ const NavBar = () => {
     navigate('/home');
   };
 
+  const handleGetChats = () => {
+    navigate('/all-chats');
+  };
+
   const handleCheckRequests = () => {
     navigate('/friend-requests');
   }
@@ -275,7 +279,9 @@ const NavBar = () => {
 
 
 
-        <EmailOutlinedIcon />
+        <div onClick={handleGetChats} style={{ cursor: 'pointer' }}>
+          <EmailOutlinedIcon />
+        </div>
         <NotificationsOutlinedIcon />
         <div className="user">
           <img

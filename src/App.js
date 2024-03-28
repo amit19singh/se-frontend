@@ -22,7 +22,9 @@ import "./style.scss";
 import Navbar from './components/navBar/NavigationBar.jsx';
 import LeftBar from './components/leftBar/LeftBar';
 import RightBar from './components/rightBar/RightBar';
+
 import ChatService from './components/chat/chatService.js';
+import ChatList from './components/chat/ChatList.jsx';
 
 
 function App() {
@@ -103,6 +105,8 @@ function App() {
           <Route path="/friends" element={<FriendsList />} />
 
           <Route path="/chat-service/:username" element={<ChatService />} />
+          
+          <Route path="/all-chats" element={<ChatList />} />
 
           
           <Route path="/search-results" element={<SearchResultsPage />} />

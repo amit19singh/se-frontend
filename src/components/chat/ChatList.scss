@@ -1,0 +1,25 @@
+.chat-list {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  
+    .chat-preview {
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #f0f0f0;
+      }
+  
+      .username {
+        font-weight: bold;
+      }
+  
+      .last-message {
+        font-size: 0.8em;
+        color: #666;
+      }
+    }
+  }
+  
